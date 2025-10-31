@@ -1,0 +1,22 @@
+{
+  "name": "Carl & Stacey's Wedding Planner",
+  "short_name": "C&S Planner",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#F8F1E9",
+  "theme_color": "#8C5B42",
+  "icons": [
+    {
+      "src": "https_placehold.co_192x192_8C5B42_F8F1E9_text=C&S",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https_placehold.co_512x512_8C5B42_F8F1E9_text=C&S",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
