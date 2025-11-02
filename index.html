@@ -20,113 +20,224 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 
   <style>
-  /* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@600&display=swap');
+<!-- Wedding Palette CSS -->
+  <style>
+    /* Import Google Fonts (must be first in style block) */
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@600&display=swap');
 
-/* Root variables for your wedding palette */
-:root {
-  --navy: #1A1A40;       /* deep navy */
-  --peach: #FAD1AF;      /* soft peach */
-  --orange: #FF7F50;     /* coral/orange */
-  --sky: #87CEEB;        /* sky blue */
-  --neutral: #FFFFFF;    /* clean white background */
-  --text: #333333;       /* dark gray for readability */
-  --heading-font: 'Playfair Display', serif;
-  --body-font: 'Montserrat', sans-serif;
-}
+    /* Theme variables */
+    :root {
+      --navy: #1A1A40;       /* deep navy */
+      --peach: #FAD1AF;      /* soft peach */
+      --orange: #FF8243;     /* coral/orange */
+      --sky: #87CEEB;        /* sky blue */
+      --neutral: #FFFFFF;    /* clean white */
+      --text: #333333;       /* dark gray */
+      --heading-font: 'Playfair Display', serif;
+      --body-font: 'Montserrat', sans-serif;
+    }
 
-/* General body styling */
-body {
-  font-family: var(--body-font);
-  background-color: var(--neutral);
-  color: var(--text);
-  margin: 0;
-  padding: 0;
-  line-height: 1.6;
-}
+    /* Base layout */
+    html, body {
+      height: 100%;
+    }
 
-/* Headings */
-h1, h2, h3 {
-  font-family: var(--heading-font);
-  color: var(--navy);
-  margin-bottom: 0.5em;
-}
+    body {
+      font-family: var(--body-font);
+      background-color: var(--neutral);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
 
-/* Navigation buttons */
-.main-nav-btn {
-  background-color: var(--peach);
-  color: var(--navy);
-  border: none;
-  padding: 0.75em 1.5em;
-  border-radius: 999px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
+    /* Container */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
 
-.main-nav-btn.active {
-  background-color: var(--navy);
-  color: var(--neutral);
-}
+    /* Utility spacing (basic replacements for Tailwind classes used earlier) */
+    .p-4 { padding: 1rem; }
+    .sm\:p-6 { padding: 1.5rem; }
+    .md\:p-8 { padding: 2rem; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-8 { margin-bottom: 2rem; }
+    .text-center { text-align: center; }
+    .rounded-full { border-radius: 999px; }
+    .rounded { border-radius: 0.5rem; }
+    .flex { display: flex; }
+    .justify-center { justify-content: center; }
+    .flex-wrap { flex-wrap: wrap; }
+    .gap-2 { gap: 0.5rem; }
+    .text-lg { font-size: 1.125rem; }
+    .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+    .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
 
-.sub-nav-btn {
-  background-color: var(--sky);
-  color: var(--navy);
-  border-radius: 999px;
-  padding: 0.5em 1em;
-  font-weight: 500;
-}
+    /* Headings */
+    h1, h2, h3 {
+      font-family: var(--heading-font);
+      color: var(--navy);
+      margin: 0 0 0.5em 0;
+    }
 
-.sub-nav-btn.active {
-  background-color: var(--orange);
-  color: var(--neutral);
-}
+    /* Navigation buttons */
+    .main-nav-btn {
+      background-color: var(--peach);
+      color: var(--navy);
+      border: none;
+      padding: 0.75em 1.5em;
+      border-radius: 999px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease, transform 0.08s ease;
+    }
+    .main-nav-btn:active { transform: scale(0.98); }
+    .main-nav-btn.active {
+      background-color: var(--navy);
+      color: var(--neutral);
+      font-weight: 700;
+    }
 
-/* Sections and cards */
-section, .card, .day-card {
-  background: var(--neutral);
-  border-radius: 1rem;
-  padding: 1.25rem;
-  margin: 1.5em auto;
-  max-width: 800px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  border-left: 5px solid var(--peach);
-}
+    .sub-nav-btn {
+      background-color: var(--sky);
+      color: var(--navy);
+      border: none;
+      border-radius: 999px;
+      padding: 0.5em 1em;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    .sub-nav-btn.active {
+      background-color: var(--orange);
+      color: var(--neutral);
+      font-weight: 700;
+    }
 
-/* Buttons */
-button, .btn {
-  background-color: var(--orange);
-  color: var(--neutral);
-  border: none;
-  padding: 0.75em 1.5em;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
+    /* Sections and cards */
+    section, .card, .day-card {
+      background: var(--neutral);
+      border-radius: 1rem;
+      padding: 1.25rem;
+      margin: 1.5em auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .day-card {
+      border-left: 5px solid var(--peach);
+    }
 
-button:hover, .btn:hover {
-  background-color: var(--navy);
-  color: var(--neutral);
-}
+    /* Pills / tags */
+    .pill {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      background: var(--sky);
+      color: var(--navy);
+      font-weight: 600;
+    }
 
-/* Pills / tags */
-.pill {
-  display: inline-block;
-  padding: 0.25rem 0.6rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  background: var(--sky);
-  color: var(--navy);
-}
+    /* Progress bar */
+    .progress-bar-container {
+      position: relative;
+      background-color: #E5E7EB;
+      border-radius: 9999px;
+      height: 1rem;
+      width: 100%;
+      overflow: hidden;
+    }
+    .progress-bar {
+      background-color: var(--navy);
+      height: 100%;
+      width: 0%;
+      border-radius: 9999px;
+      transition: width 0.3s ease;
+    }
+    .progress-bar-text {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 0.75rem;
+      color: #fff;
+      font-weight: bold;
+      text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+    }
+
+    /* Accordion */
+    .accordion {
+      margin-top: 0.75rem;
+    }
+    .accordion-trigger {
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      color: var(--navy);
+    }
+    .accordion-trigger .chevron {
+      transition: transform 0.2s ease;
+    }
+    .accordion-content {
+      display: none;
+      margin-top: 0.5rem;
+      padding-left: 1rem;
+      border-left: 2px solid var(--peach);
+    }
+    .accordion-open > .accordion-content {
+      display: block;
+    }
+    .accordion-open .chevron {
+      transform: rotate(180deg);
+    }
+
+    /* Tabs */
+    .tab-content-panel { display: none; }
+    .tab-content-panel.active { display: block; }
+
+    .sub-tab-content { display: none; }
+    .sub-tab-content.active { display: block; }
+
+    .hidden { display: none; }
+
+    /* Charts */
+    .chart-container {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      margin: auto;
+      height: 320px;
+    }
+
+    /* Links and underline helper */
+    a {
+      color: var(--navy);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+    .underline { text-decoration: underline; }
+
+    /* Print control */
+    @media print {
+      body * { visibility: hidden; }
+      #printable-packing, #printable-packing * { visibility: visible; }
+      #printable-packing { position: absolute; left: 0; top: 0; width: 100%; }
+      .no-print { display: none; }
+    }
   </style>
 </head>
-<body class="antialiased">
-  <div class="container mx-auto p-4 sm:p-6 md:p-8">
 
+<body class="antialiased">
+  <div class="container p-4 sm:p-6 md:p-8">
+    <!-- Current date -->
     <div class="text-center mb-4 no-print">
-      <p id="current-date" class="text-sm text-[#C8987A]"></p>
+      <p id="current-date" class="pill"></p>
     </div>
+
     <!-- MAIN NAVIGATION -->
     <nav class="flex justify-center flex-wrap gap-2 mb-8 no-print">
       <button data-tab-name="wedding" class="main-nav-btn py-3 px-6 rounded-full text-lg">💍 Wedding</button>
@@ -134,6 +245,121 @@ button:hover, .btn:hover {
       <button data-tab-name="glowUp" class="main-nav-btn py-3 px-6 rounded-full text-lg">✨ Glow Up</button>
       <button data-tab-name="about" class="main-nav-btn py-3 px-6 rounded-full text-lg">ℹ️ About</button>
     </nav>
+
+    <!-- TAB PANELS -->
+    <main>
+      <!-- Wedding tab -->
+      <section id="tab-wedding" class="tab-content-panel active">
+        <h2>Wedding planner</h2>
+
+        <div class="card">
+          <h3>Timeline</h3>
+          <div class="progress-bar-container" aria-label="Timeline progress">
+            <div class="progress-bar" id="wedding-progress" style="width: 35%"></div>
+            <span class="progress-bar-text">35%</span>
+          </div>
+        </div>
+
+        <div class="card accordion">
+          <div class="accordion-trigger">
+            <span>Vendors checklist</span>
+            <span class="chevron">⌄</span>
+          </div>
+          <div class="accordion-content">
+            <ul>
+              <li><span class="pill">Booked</span> Venue</li>
+              <li><span class="pill">Pending</span> Photographer</li>
+              <li><span class="pill">Pending</span> Florist</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Travel tab -->
+      <section id="tab-travel" class="tab-content-panel">
+        <h2>Travel planner</h2>
+        <div class="day-card">
+          <h3>Upcoming trips</h3>
+          <p>Curate flights, stays, and packing with wedding palette polish.</p>
+        </div>
+      </section>
+
+      <!-- Glow Up tab -->
+      <section id="tab-glowUp" class="tab-content-panel">
+        <h2>Glow Up routines</h2>
+        <div class="card">
+          <h3>Daily habits</h3>
+          <ul>
+            <li>Hydration — 2L water</li>
+            <li>Skincare — cleanse, moisturize, SPF</li>
+            <li>Movement — 30 min walk</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- About tab -->
+      <section id="tab-about" class="tab-content-panel">
+        <h2>About this planner</h2>
+        <p>Built as a Progressive Web App with your wedding palette: navy, peach, orange, and sky blue.</p>
+      </section>
+    </main>
+  </div>
+
+  <!-- Minimal JS: date, tabs, accordion -->
+  <script>
+    // Current date display
+    (function showDate() {
+      const el = document.getElementById('current-date');
+      if (!el) return;
+      const now = new Date();
+      const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      el.textContent = now.toLocaleDateString(undefined, opts);
+    })();
+
+    // Tabs
+    (function setupTabs() {
+      const buttons = Array.from(document.querySelectorAll('.main-nav-btn'));
+      const panels = {
+        wedding: document.getElementById('tab-wedding'),
+        travel: document.getElementById('tab-travel'),
+        glowUp: document.getElementById('tab-glowUp'),
+        about: document.getElementById('tab-about')
+      };
+
+      function activate(name) {
+        // toggle buttons
+        buttons.forEach(btn => {
+          btn.classList.toggle('active', btn.getAttribute('data-tab-name') === name);
+        });
+        // toggle panels
+        Object.keys(panels).forEach(key => {
+          panels[key]?.classList.toggle('active', key === name);
+        });
+      }
+
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const name = btn.getAttribute('data-tab-name');
+          activate(name);
+        });
+      });
+
+      // Default to wedding
+      activate('wedding');
+    })();
+
+    // Accordions
+    (function setupAccordions() {
+      document.querySelectorAll('.accordion').forEach(acc => {
+        const trigger = acc.querySelector('.accordion-trigger');
+        if (!trigger) return;
+        trigger.addEventListener('click', () => {
+          acc.classList.toggle('accordion-open');
+        });
+      });
+    })();
+  </script>
+</body>
 
     <!-- ====================================================== -->
     <!-- WEDDING SECTION                                        -->
