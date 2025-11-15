@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -9,6 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="manifest" href="manifest.json">
 
   <style>
     body { font-family: 'Inter', sans-serif; background-color: #F8F1E9; color: #8C5B42; }
@@ -57,6 +58,7 @@
     <div class="text-center mb-4 no-print">
       <p id="current-date" class="text-sm text-[#C8987A]"></p>
     </div>
+
     <!-- MAIN NAVIGATION -->
     <nav class="flex justify-center flex-wrap gap-2 mb-8 no-print">
       <button data-tab-name="wedding" class="main-nav-btn py-3 px-6 rounded-full text-lg">💍 Wedding</button>
@@ -65,9 +67,7 @@
       <button data-tab-name="about" class="main-nav-btn py-3 px-6 rounded-full text-lg">ℹ️ About</button>
     </nav>
 
-    <!-- ====================================================== -->
-    <!-- WEDDING SECTION                                        -->
-    <!-- ====================================================== -->
+    <!-- WEDDING -->
     <div id="wedding-panel" class="tab-content-panel">
       <header class="text-center py-6">
         <h1 class="text-4xl md:text-5xl text-[#8C5B42]">Carl & Stacey's Wedding Planner</h1>
@@ -80,7 +80,7 @@
         <button class="sub-nav-btn py-2 px-4 rounded-full" data-subtab="budget">Budget</button>
       </nav>
 
-      <!-- Wedding -> Plan -->
+      <!-- Plan -->
       <div id="plan-subtab" class="sub-tab-content">
         <section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8 text-center">
           <div class="card">
@@ -101,6 +101,7 @@
             <p class="text-sm text-[#C8987A]">Invited</p>
           </div>
         </section>
+
         <section class="section mb-8">
           <h2 class="text-2xl text-center mb-4">Wedding Vision & Style</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -122,6 +123,7 @@
             </div>
           </div>
         </section>
+
         <section class="section mb-4">
           <h2 class="text-2xl text-center mb-4">Ceremony location</h2>
           <div class="text-center">
@@ -134,7 +136,7 @@
         </section>
       </div>
 
-      <!-- Wedding -> Checklists -->
+      <!-- Checklists -->
       <div id="checklists-subtab" class="sub-tab-content">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <section class="section">
@@ -177,11 +179,11 @@
           </section>
         </div>
         <div class="mt-8 text-center no-print">
-            <button id="reset-wedding-progress" class="sub-nav-btn py-2 px-4 rounded-full text-sm">Reset Checklist Progress</button>
+          <button id="reset-wedding-progress" class="sub-nav-btn py-2 px-4 rounded-full text-sm">Reset Checklist Progress</button>
         </div>
       </div>
 
-      <!-- Wedding -> Timeline -->
+      <!-- Timeline -->
       <div id="timeline-subtab" class="sub-tab-content">
         <div class="relative border-l-4 border-dashed border-[#F3D8C7] ml-6">
           <div class="mb-6 ml-4"><h3 class="font-bold">2.5 Years Out (Now)</h3><p class="text-sm text-[#8C5B42]">Book cruise, flights & Rome hotel.</p></div>
@@ -191,7 +193,7 @@
         </div>
       </div>
 
-      <!-- Wedding -> Budget -->
+      <!-- Budget -->
       <div id="budget-subtab" class="sub-tab-content">
         <section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8 text-center">
           <div class="card"><h3>Total budget</h3><p id="budget-total" class="text-3xl font-bold">$0</p></div>
@@ -201,46 +203,45 @@
         </section>
         <div class="chart-container mb-6"><canvas id="budgetChart"></canvas></div>
         <div class="mt-4 text-center">
-  <h3 class="text-lg font-bold mb-1">Budget Progress</h3>
-  <div class="progress-bar-container" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-    <div id="budget-progress" class="progress-bar">
-      <span id="budget-progress-text-inner" class="progress-bar-text"></span>
-    </div>
-  </div>
-  <p id="budget-progress-text" class="mt-2 text-sm text-[#C8987A]">0% paid</p>
-</div>
+          <h3 class="text-lg font-bold mb-1">Budget Progress</h3>
+          <div class="progress-bar-container" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div id="budget-progress" class="progress-bar">
+              <span id="budget-progress-text-inner" class="progress-bar-text"></span>
+            </div>
+          </div>
+          <p id="budget-progress-text" class="mt-2 text-sm text-[#C8987A]">0% paid</p>
+        </div>
         <section class="section"><h2 class="text-xl mb-3">Payment milestones</h2><ul id="budget-milestones" class="space-y-2"></ul></section>
       </div>
     </div>
 
-    <!-- ====================================================== -->
-    <!-- TRAVEL SECTION                                         -->
-    <!-- ====================================================== -->
+    <!-- TRAVEL -->
     <div id="travel-panel" class="tab-content-panel">
       <header class="text-center py-6">
-        <h1 class="text-4xl md:text-5xl text-[#8C5B42]">Travel Plans</h1><p class="text-base text-[#C8987A] mt-1">Itinerary, packing, and parents’ hub</p></header>
+        <h1 class="text-4xl md:text-5xl text-[#8C5B42]">Travel Plans</h1>
+        <p class="text-base text-[#C8987A] mt-1">Itinerary, packing, and parents’ hub</p>
+      </header>
       <nav class="flex justify-center flex-wrap gap-2 mb-6 no-print">
         <button class="sub-nav-btn py-2 px-4 rounded-full" data-subtab="itinerary">Itinerary</button>
         <button class="sub-nav-btn py-2 px-4 rounded-full" data-subtab="packing">Packing</button>
         <button class="sub-nav-btn py-2 px-4 rounded-full" data-subtab="parents">Parents</button>
       </nav>
 
-      <!-- Travel -> Itinerary -->
+      <!-- Itinerary -->
       <div id="itinerary-subtab" class="sub-tab-content">
         <div class="my-4 flex justify-center gap-2 no-print">
-            <button id="expand-all-itinerary" class="sub-nav-btn py-2 px-4 rounded-full text-sm">Expand All</button>
-            <button id="collapse-all-itinerary" class="sub-nav-btn py-2 px-4 rounded-full text-sm">Collapse All</button>
+          <button id="expand-all-itinerary" class="sub-nav-btn py-2 px-4 rounded-full text-sm">Expand All</button>
+          <button id="collapse-all-itinerary" class="sub-nav-btn py-2 px-4 rounded-full text-sm">Collapse All</button>
         </div>
         <div id="itinerary-list" class="space-y-4">
-
-          <!-- Accordion: Rome pre-cruise -->
+          <!-- Pre-cruise block -->
           <div class="day-card" data-accordion-item>
             <div class="accordion-trigger">
-                <div>
-                  <h3 class="text-xl font-bold mb-1">Pre‑Cruise: 5 Days in Rome</h3>
-                  <p class="text-sm font-semibold text-[#C8987A]">Flights: Emirates (BNE → FCO)</p>
-                </div>
-                <span class="chevron text-2xl">▾</span>
+              <div>
+                <h3 class="text-xl font-bold mb-1">Pre‑Cruise: 5 Days in Rome</h3>
+                <p class="text-sm font-semibold text-[#C8987A]">Flights: Emirates (BNE → FCO)</p>
+              </div>
+              <span class="chevron text-2xl">▾</span>
             </div>
             <div class="accordion-content">
               <div class="section mt-4">
@@ -271,26 +272,25 @@
         </div>
       </div>
 
-      <!-- Travel -> Packing -->
+      <!-- Packing -->
       <div id="packing-subtab" class="sub-tab-content">
         <div id="printable-packing">
-            <h2 class="text-3xl text-center mb-6 hidden print:block">Carl & Stacey's Wedding Trip - Packing List</h2>
-            <div class="flex justify-center flex-wrap gap-2 mb-4 no-print" id="packing-filter-container">
-            </div>
-            <div id="packing-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-            <div class="mt-6 text-center no-print">
-              <h3 class="text-lg font-bold mb-1">Packing progress</h3>
-              <div class="progress-bar-container" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="packing-progress" class="progress-bar"><span id="packing-progress-text-inner" class="progress-bar-text"></span></div></div>
-              <p id="packing-progress-text" class="mt-2 text-sm text-[#C8987A]">0 of 0 items packed</p>
-            </div>
+          <h2 class="text-3xl text-center mb-6 hidden print:block">Carl & Stacey's Wedding Trip - Packing List</h2>
+          <div class="flex justify-center flex-wrap gap-2 mb-4 no-print" id="packing-filter-container"></div>
+          <div id="packing-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+          <div class="mt-6 text-center no-print">
+            <h3 class="text-lg font-bold mb-1">Packing progress</h3>
+            <div class="progress-bar-container" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="packing-progress" class="progress-bar"><span id="packing-progress-text-inner" class="progress-bar-text"></span></div></div>
+            <p id="packing-progress-text" class="mt-2 text-sm text-[#C8987A]">0 of 0 items packed</p>
+          </div>
         </div>
         <div class="mt-8 text-center no-print">
-            <button id="print-packing-list" class="sub-nav-btn py-2 px-4 rounded-full text-sm mr-2">Print List</button>
-            <button id="reset-packing-progress" class="sub-nav-btn py-2 px-4 rounded-full text-sm">Reset Progress</button>
+          <button id="print-packing-list" class="sub-nav-btn py-2 px-4 rounded-full text-sm mr-2">Print List</button>
+          <button id="reset-packing-progress" class="sub-nav-btn py-2 px-4 rounded-full text-sm">Reset Progress</button>
         </div>
       </div>
 
-      <!-- Travel -> Parents -->
+      <!-- Parents -->
       <div id="parents-subtab" class="sub-tab-content">
         <section class="section mb-6">
           <h2 class="text-xl text-center mb-4">✈️ Flights</h2>
@@ -301,8 +301,8 @@
           <div class="mt-4 text-center"><h3 class="text-lg font-semibold text-[#C8987A]">Days until departure</h3><p id="parents-departure-countdown" class="text-4xl font-bold text-[#8C5B42]">...</p></div>
         </section>
         <section class="section mb-6">
-            <h2 class="text-xl text-center mb-4">♿ Mobility & Accessibility Notes</h2>
-            <p class="text-center text-base text-[#8C5B42] p-4 bg-[#F8F1E9] rounded-lg">Rome hotel has elevator access. Vatican and Colosseum tours are early-access to avoid crowds and long queues. Golf cart tour is a low-exertion way to see the city's highlights.</p>
+          <h2 class="text-xl text-center mb-4">♿ Mobility & Accessibility Notes</h2>
+          <p class="text-center text-base text-[#8C5B42] p-4 bg-[#F8F1E9] rounded-lg">Rome hotel has elevator access. Vatican and Colosseum tours are early-access to avoid crowds and long queues. Golf cart tour is a low-exertion way to see the city's highlights.</p>
         </section>
         <section class="section mb-6">
           <h2 class="text-xl text-center mb-4">💰 Budget</h2>
@@ -317,8 +317,7 @@
         </section>
         <section class="section">
           <h2 class="text-xl text-center mb-4">🧳 Packing checklist</h2>
-          <div id="parents-packing-filter-container" class="flex justify-center flex-wrap gap-2 mb-6">
-          </div>
+          <div id="parents-packing-filter-container" class="flex justify-center flex-wrap gap-2 mb-6"></div>
           <div id="parents-packing-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
           <div class="mt-6 text-center">
             <h3 class="text-lg font-bold mb-1">Packing progress</h3>
@@ -329,9 +328,7 @@
       </div>
     </div>
 
-   <!-- ====================================================== -->
-    <!-- GLOW UP PANEL                                          -->
-    <!-- ====================================================== -->
+    <!-- GLOW UP -->
     <div id="glowUp-panel" class="tab-content-panel">
       <header class="text-center py-8">
         <h1 class="text-4xl md:text-6xl text-[#8C5B42]">Stacey's Wedding Glow Up</h1>
@@ -346,7 +343,7 @@
         </div>
         <div class="bg-white/50 rounded-2xl p-6 shadow-sm">
           <h3 class="text-lg font-semibold text-[#C8987A]">Current Weight</h3>
-          <p class="text-5xl font-bold text-[#8C5B42]">72.9<span class="text-2xl">kg</span></p>
+          <p class="text-5xl font-bold text-[#8C5B42]">74.3<span class="text-2xl">kg</span></p>
         </div>
         <div class="bg-white/50 rounded-2xl p-6 shadow-sm">
           <h3 class="text-lg font-semibold text-[#C8987A]">Daily Protein Goal</h3>
@@ -368,7 +365,7 @@
           <label class="checkbox-label flex-col justify-center p-4 bg-[#F8F1E9] rounded-lg cursor-pointer"><input type="checkbox" data-persist-id="accountabilityState-pm-skincare" class="form-checkbox text-[#8C5B42] h-6 w-6"><span class="mt-2 text-sm font-medium">PM Skincare Routine</span></label>
         </div>
         <div class="mt-8 text-center no-print">
-            <button id="reset-glowup-progress" class="sub-nav-btn py-2 px-4 rounded-full text-sm">Reset All Glow Up Progress</button>
+          <button id="reset-glowup-progress" class="sub-nav-btn py-2 px-4 rounded-full text-sm">Reset All Glow Up Progress</button>
         </div>
       </section>
 
@@ -383,27 +380,15 @@
         <div id="evening-plan" class="tab-content"></div>
       </section>
 
-        <!-- Nutrition -->
+      <!-- Nutrition -->
       <section id="nutrition-plan" class="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-12">
         <h2 class="text-3xl text-center mb-6">Nutrition Strategy: Protein Boosts</h2>
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
           <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="p-4 bg-[#F8F1E9] rounded-lg">
-              <h4 class="font-bold">Mid-Morning Snack</h4>
-              <p class="text-sm"><span class="font-semibold text-[#C8987A]">SWAP</span> Hummus <span class="font-semibold text-[#8C5B42]">FOR</span> Protein-Boosted Hummus. <span class="block mt-1 font-bold">+10g Protein</span></p>
-            </div>
-            <div class="p-4 bg-[#F8F1E9] rounded-lg">
-              <h4 class="font-bold">Lunch</h4>
-              <p class="text-sm"><span class="font-semibold text-[#C8987A]">BOOST</span> Protein to 150g & add seeds. <span class="block mt-1 font-bold">+15g Protein</span></p>
-            </div>
-            <div class="p-4 bg-[#F8F1E9] rounded-lg">
-              <h4 class="font-bold">Afternoon Snack</h4>
-              <p class="text-sm"><span class="font-semibold text-[#C8987A]">PRIORITIZE</span> Feta <span class="font-semibold text-[#8C5B42]">FOR</span> Almonds/Walnuts. <span class="block mt-1 font-bold">+5g Protein</span></p>
-            </div>
-            <div class="p-4 bg-[#F8F1E9] rounded-lg">
-              <h4 class="font-bold">After Dinner</h4>
-              <p class="text-sm"><span class="font-semibold text-[#C8987A]">REPLACE</span> Popcorn/Fruit <span class="font-semibold text-[#8C5B42]">FOR</span> Yogurt/Casein Shake. <span class="block mt-1 font-bold">Sleep Fuel</span></p>
-            </div>
+            <div class="p-4 bg-[#F8F1E9] rounded-lg"><h4 class="font-bold">Mid-Morning Snack</h4><p class="text-sm"><span class="font-semibold text-[#C8987A]">SWAP</span> Hummus <span class="font-semibold text-[#8C5B42]">FOR</span> Protein-Boosted Hummus. <span class="block mt-1 font-bold">+10g Protein</span></p></div>
+            <div class="p-4 bg-[#F8F1E9] rounded-lg"><h4 class="font-bold">Lunch</h4><p class="text-sm"><span class="font-semibold text-[#C8987A]">BOOST</span> Protein to 150g & add seeds. <span class="block mt-1 font-bold">+15g Protein</span></p></div>
+            <div class="p-4 bg-[#F8F1E9] rounded-lg"><h4 class="font-bold">Afternoon Snack</h4><p class="text-sm"><span class="font-semibold text-[#C8987A]">PRIORITIZE</span> Feta <span class="font-semibold text-[#8C5B42]">FOR</span> Almonds/Walnuts. <span class="block mt-1 font-bold">+5g Protein</span></p></div>
+            <div class="p-4 bg-[#F8F1E9] rounded-lg"><h4 class="font-bold">After Dinner</h4><p class="text-sm"><span class="font-semibold text-[#C8987A]">REPLACE</span> Popcorn/Fruit <span class="font-semibold text-[#8C5B42]">FOR</span> Yogurt/Casein Shake. <span class="block mt-1 font-bold">Sleep Fuel</span></p></div>
           </div>
           <div>
             <h3 class="text-xl text-center font-bold mb-4">Protein Distribution</h3>
@@ -412,54 +397,54 @@
         </div>
       </section>
 
-      <!-- Exercise & Fitness Progression -->
+      <!-- 3-Year Fitness Progression -->
       <section class="section mb-12 bg-white rounded-2xl shadow-lg p-6 md:p-8" aria-label="3-Year Plan">
         <h2 class="text-3xl text-center mb-6">💪 3-Year Fitness Progression</h2>
         <div class="space-y-2 mt-8">
-            <div class="p-4 bg-[#F8F1E9] rounded-lg shadow-sm" data-accordion-item>
-                <div class="accordion-trigger">
-                    <h3 class="font-bold text-lg">Year 1: Foundational Core & Arm Cinch</h3>
-                    <span class="chevron text-2xl">▾</span>
-                </div>
-                <div class="accordion-content">
-                    <p class="text-sm my-2">Focus: Deep Core and Triceps Toning for the dress fit.</p>
-                    <ul class="text-sm space-y-2">
-                        <li class="checklist-item"><input type="checkbox" class="form-checkbox mr-2" data-persist-id="fitnessMasteryState-y1-1">Core Cinching: The Hundred & Plank Variations. <a href="https://www.youtube.com/results?search_query=pilates+the+hundred+and+plank+variations" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline ml-2">▶️ Search Form Video</a></li>
-                        <li class="checklist-item"><input type="checkbox" class="form-checkbox mr-2" data-persist-id="fitnessMasteryState-y1-2">Arm Tone: Triceps Kickbacks & Overhead Extensions. <a href="https://www.youtube.com/results?search_query=triceps+kickbacks+and+overhead+extensions" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline ml-2">▶️ Search Form Video</a></li>
-                        <li class="checklist-item"><input type="checkbox" class="form-checkbox mr-2" data-persist-id="fitnessMasteryState-y1-3">Posture: Side Planks (from knees). <a href="https://www.youtube.com/results?search_query=side+plank+from+knees" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline ml-2">▶️ Search Form Video</a></li>
-                    </ul>
-                </div>
+          <div class="p-4 bg-[#F8F1E9] rounded-lg shadow-sm" data-accordion-item>
+            <div class="accordion-trigger">
+              <h3 class="font-bold text-lg">Year 1: Foundational Core & Arm Cinch</h3>
+              <span class="chevron text-2xl">▾</span>
             </div>
+            <div class="accordion-content">
+              <p class="text-sm my-2">Focus: Deep Core and Triceps Toning for the dress fit.</p>
+              <ul class="text-sm space-y-2">
+                <li class="checklist-item"><input type="checkbox" class="form-checkbox mr-2" data-persist-id="fitnessMasteryState-y1-1">Core Cinching: The Hundred & Plank Variations. <a href="https://www.youtube.com/results?search_query=pilates+the+hundred+and+plank+variations" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline ml-2">▶️ Search Form Video</a></li>
+                <li class="checklist-item"><input type="checkbox" class="form-checkbox mr-2" data-persist-id="fitnessMasteryState-y1-2">Arm Tone: Triceps Kickbacks & Overhead Extensions. <a href="https://www.youtube.com/results?search_query=triceps+kickbacks+and+overhead+extensions" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline ml-2">▶️ Search Form Video</a></li>
+                <li class="checklist-item"><input type="checkbox" class="form-checkbox mr-2" data-persist-id="fitnessMasteryState-y1-3">Posture: Side Planks (from knees). <a href="https://www.youtube.com/results?search_query=side+plank+from+knees" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline ml-2">▶️ Search Form Video</a></li>
+              </ul>
+            </div>
+          </div>
 
-            <div class="p-4 bg-[#F8F1E9] rounded-lg shadow-sm" data-accordion-item>
-                <div class="accordion-trigger">
-                    <h3 class="font-bold text-lg">Year 2: Strength & Definition</h3>
-                    <span class="chevron text-2xl">▾</span>
-                </div>
-                <div class="accordion-content">
-                    <p class="text-sm my-2">Focus: Lean muscle in arms and abs.</p>
-                    <ul class="text-sm space-y-2">
-                        <li class="checklist-item"><input type="checkbox" class="form-checkbox mr-2" data-persist-id="fitnessMasteryState-y2-1">Weighted Planks & Side Plank Lifts. <a href="https://www.youtube.com/results?search_query=weighted+planks+and+side+plank+lifts" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline ml-2">▶️ Search Form Video</a></li>
-                        <li class="checklist-item"><input type="checkbox" class="form-checkbox mr-2" data-persist-id="fitnessMasteryState-y2-2">Bicep Curls & Lateral Raises. <a href="https://www.youtube.com/results?search_query=bicep+curls+and+lateral+raises" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline ml-2">▶️ Search Form Video</a></li>
-                        <li class="checklist-item"><input type="checkbox" class="form-checkbox mr-2" data-persist-id="fitnessMasteryState-y2-3">Core: Pilates Roll-Ups & Leg Lowers. <a href="https://www.youtube.com/results?search_query=pilates+roll+ups+and+leg+lowers" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline ml-2">▶️ Search Form Video</a></li>
-                    </ul>
-                </div>
+          <div class="p-4 bg-[#F8F1E9] rounded-lg shadow-sm" data-accordion-item>
+            <div class="accordion-trigger">
+              <h3 class="font-bold text-lg">Year 2: Strength & Definition</h3>
+              <span class="chevron text-2xl">▾</span>
             </div>
+            <div class="accordion-content">
+              <p class="text-sm my-2">Focus: Lean muscle in arms and abs.</p>
+              <ul class="text-sm space-y-2">
+                <li class="checklist-item"><input type="checkbox" class="form-checkbox mr-2" data-persist-id="fitnessMasteryState-y2-1">Weighted Planks & Side Plank Lifts. <a href="https://www.youtube.com/results?search_query=weighted+planks+and+side+plank+lifts" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline ml-2">▶️ Search Form Video</a></li>
+                <li class="checklist-item"><input type="checkbox" class="form-checkbox mr-2" data-persist-id="fitnessMasteryState-y2-2">Bicep Curls & Lateral Raises. <a href="https://www.youtube.com/results?search_query=bicep+curls+and+lateral+raises" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline ml-2">▶️ Search Form Video</a></li>
+                <li class="checklist-item"><input type="checkbox" class="form-checkbox mr-2" data-persist-id="fitnessMasteryState-y2-3">Core: Pilates Roll-Ups & Leg Lowers. <a href="https://www.youtube.com/results?search_query=pilates+roll+ups+and+leg+lowers" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline ml-2">▶️ Search Form Video</a></li>
+              </ul>
+            </div>
+          </div>
 
-            <div class="p-4 bg-[#F8F1E9] rounded-lg shadow-sm" data-accordion-item>
-                <div class="accordion-trigger">
-                    <h3 class="font-bold text-lg">Year 3: Power & Bridal Peak</h3>
-                    <span class="chevron text-2xl">▾</span>
-                </div>
-                <div class="accordion-content">
-                    <p class="text-sm my-2">Focus: Peak strength, posture, endurance.</p>
-                    <ul class="text-sm space-y-2">
-                        <li class="checklist-item"><input type="checkbox" class="form-checkbox mr-2" data-persist-id="fitnessMasteryState-y3-1">Advanced Plank Variations (with leg lifts). <a href="https://www.youtube.com/results?search_query=advanced+plank+variations+with+leg+lifts" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline ml-2">▶️ Search Form Video</a></li>
-                        <li class="checklist-item"><input type="checkbox" class="form-checkbox mr-2" data-persist-id="fitnessMasteryState-y3-2">Push-Up to Side Plank Flow. <a href="https://www.youtube.com/results?search_query=push+up+to+side+plank+flow" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline ml-2">▶️ Search Form Video</a></li>
-                        <li class="checklist-item"><input type="checkbox" class="form-checkbox mr-2" data-persist-id="fitnessMasteryState-y3-3">Weighted Russian Twists & Pilates Teaser. <a href="https://www.youtube.com/results?search_query=weighted+russian+twists+and+pilates+teaser" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline ml-2">▶️ Search Form Video</a></li>
-                    </ul>
-                </div>
+          <div class="p-4 bg-[#F8F1E9] rounded-lg shadow-sm" data-accordion-item>
+            <div class="accordion-trigger">
+              <h3 class="font-bold text-lg">Year 3: Power & Bridal Peak</h3>
+              <span class="chevron text-2xl">▾</span>
             </div>
+            <div class="accordion-content">
+              <p class="text-sm my-2">Focus: Peak strength, posture, endurance.</p>
+              <ul class="text-sm space-y-2">
+                <li class="checklist-item"><input type="checkbox" class="form-checkbox mr-2" data-persist-id="fitnessMasteryState-y3-1">Advanced Plank Variations (with leg lifts). <a href="https://www.youtube.com/results?search_query=advanced+plank+variations+with+leg+lifts" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline ml-2">▶️ Search Form Video</a></li>
+                <li class="checklist-item"><input type="checkbox" class="form-checkbox mr-2" data-persist-id="fitnessMasteryState-y3-2">Push-Up to Side Plank Flow. <a href="https://www.youtube.com/results?search_query=push+up+to+side+plank+flow" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline ml-2">▶️ Search Form Video</a></li>
+                <li class="checklist-item"><input type="checkbox" class="form-checkbox mr-2" data-persist-id="fitnessMasteryState-y3-3">Weighted Russian Twists & Pilates Teaser. <a href="https://www.youtube.com/results?search_query=weighted+russian+twists+and+pilates+teaser" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline ml-2">▶️ Search Form Video</a></li>
+              </ul>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -467,7 +452,7 @@
       <section id="workout-plan" class="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-12">
         <h2 class="text-3xl text-center mb-2">🗓️ Weekly Workout Plan</h2>
         <p class="text-center text-sm text-[#C8987A] mb-4">Your shoulder-safe, targeted afternoon routine.</p>
-        
+
         <div class="mt-4 mb-6 text-center">
           <h3 class="text-lg font-bold mb-1">Weekly Workout Progress</h3>
           <div class="progress-bar-container" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
@@ -484,7 +469,7 @@
           <button data-workout-tab="friday" class="workout-tab-btn py-3 px-5 text-lg font-medium border-b-4 border-transparent hover:border-[#C8987A]">Fri</button>
           <button data-workout-tab="weekend" class="workout-tab-btn py-3 px-5 text-lg font-medium border-b-4 border-transparent hover:border-[#C8987A]">W/End</button>
         </div>
-        
+
         <div id="monday-workout-plan" class="workout-content">
           <h3 class="text-xl font-bold text-center mb-4 text-[#8C5B42]">Core & Stomach</h3>
           <p class="text-center text-sm mb-4 text-[#C8987A]"><strong>Equipment:</strong> Pilates ball, yoga mat, Arena bands, SPOR bench</p>
@@ -494,9 +479,9 @@
             <li class="p-3 bg-[#F8F1E9] rounded-lg"><strong>Mini Reformer Leg Circles (2x10 each way):</strong> Feet in straps. Draw controlled circles outward and inward. <a href="https://www.youtube.com/results?search_query=pilates+reformer+leg+circles" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline">▶️ Search Form Video</a></li>
             <li class="p-3 bg-[#F8F1E9] rounded-lg"><strong>SPOR Bench Incline Crunches (2x15):</strong> Lie on incline bench, feet anchored. Curl torso up, exhale, lower slowly. <a href="https://www.youtube.com/results?search_query=incline+bench+crunches" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline">▶️ Search Form Video</a></li>
           </ul>
-           <button data-workout-day="monday" class="w-full mt-4 bg-[#C8987A] text-white py-2 rounded-lg complete-btn no-print">Mark as Complete</button>
+          <button data-workout-day="monday" class="w-full mt-4 bg-[#C8987A] text-white py-2 rounded-lg complete-btn no-print">Mark as Complete</button>
         </div>
-        
+
         <div id="tuesday-workout-plan" class="workout-content">
           <h3 class="text-xl font-bold text-center mb-4 text-[#8C5B42]">Arms & Shoulders</h3>
           <p class="text-center text-sm mb-4 text-[#C8987A]"><strong>Equipment:</strong> Dumbbells (light), SPOR bench, Arena bands</p>
@@ -515,7 +500,7 @@
           <ul class="space-y-4">
             <li class="p-3 bg-[#F8F1E9] rounded-lg"><strong>Arena Booty Band Glute Bridges (3x15):</strong> Band above knees. Lie on back, lift hips, squeeze glutes. <a href="https://www.youtube.com/results?search_query=booty+band+glute+bridges" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline">▶️ Search Form Video</a></li>
             <li class="p-3 bg-[#F8F1E9] rounded-lg"><strong>Side-Lying Leg Lifts (3x15 each side):</strong> Lie on side, legs stacked. Lift top leg slowly, control the movement down. <a href="https://www.youtube.com/results?search_query=side+lying+leg+lifts" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline">▶️ Search Form Video</a></li>
-             <li class="p-3 bg-[#F8F1E9] rounded-lg"><strong>Mini Reformer Footwork (3x20):</strong> Various foot positions (heels, toes, wide) to press the carriage out. <a href="https://www.youtube.com/results?search_query=pilates+reformer+footwork" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline">▶️ Search Form Video</a></li>
+            <li class="p-3 bg-[#F8F1E9] rounded-lg"><strong>Mini Reformer Footwork (3x20):</strong> Various foot positions (heels, toes, wide) to press the carriage out. <a href="https://www.youtube.com/results?search_query=pilates+reformer+footwork" target="_blank" rel="noopener noreferrer" class="text-[#C8987A] hover:text-[#8C5B42] underline">▶️ Search Form Video</a></li>
           </ul>
           <button data-workout-day="wednesday" class="w-full mt-4 bg-[#C8987A] text-white py-2 rounded-lg complete-btn no-print">Mark as Complete</button>
         </div>
@@ -547,20 +532,18 @@
           <button data-workout-day="weekend" class="w-full mt-4 bg-[#C8987A] text-white py-2 rounded-lg complete-btn no-print">Mark as Complete</button>
         </div>
       </section>
-
     </div>
 
-    <!-- ====================================================== -->
-    <!-- ABOUT SECTION                                          -->
-    <!-- ====================================================== -->
+    <!-- ABOUT -->
     <div id="about-panel" class="tab-content-panel">
       <header class="text-center py-6">
-        <h1 class="text-4xl md:text-5xl text-[#8C5B42]">About</h1><p class="text-base text-[#C8987A] mt-1">Notes, contacts, and extras</p></header>
+        <h1 class="text-4xl md:text-5xl text-[#8C5B42]">About</h1>
+        <p class="text-base text-[#C8987A] mt-1">Notes, contacts, and extras</p>
+      </header>
       <div class="section"><p class="text-sm text-[#8C5B42]">Keep vendor contacts, notes, or reminders here.</p></div>
     </div>
-
   </div>
-  
+
   <!-- Confirmation Modal -->
   <div id="confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden no-print">
     <div class="bg-white rounded-lg p-8 shadow-2xl max-w-sm w-full text-center">
@@ -573,96 +556,122 @@
     </div>
   </div>
 
-
-  <!-- Single consolidated script -->
+  <!-- Consolidated logic -->
   <script>
   const APP = {
     data: {
       weddingDate: '2028-04-20T00:00:00',
       cruiseItinerary: [
-          { day: 1, title: 'Civitavecchia (Rome), Italy — Embarkation', content: 'Embark Sun Princess. Settle in, muster drill, sailaway.'},
-          { day: 2, title: 'Naples, Italy (Arr 07:00, Dep 19:00)', content: 'Options: Pompeii, Capri, Amalfi Coast, Naples city tours.'},
-          { day: 3, title: 'At Sea', content: 'Leisure: spa, pool, enrichment programs.'},
-          { day: 4, title: 'Chania (Crete), Greece (Arr 08:00, Dep 18:00)', content: 'Venetian harbor, Old Town, Cretan culture tours.'},
-          { day: 5, title: 'At Sea — Wedding Day!', content: 'Ceremony at The Dome — Sun Princess. Perfect Pair package celebration and photos.', highlight: true },
-          { day: 6, title: 'Kusadasi (Ephesus), Turkey (Arr 07:00, Dep 18:00)', content: 'Ephesus archaeological tours, House of Virgin Mary.'},
-          { day: 7, title: 'Mykonos, Greece (Arr 07:00, Dep 21:00)', content: 'Beach clubs, Mykonos Town, Delos tours.'},
-          { day: 8, title: 'Athens (Piraeus), Greece (Arr 06:00, Dep 19:00)', content: 'Acropolis & Parthenon, Plaka, Athens city tours.'},
-          { day: 9, title: 'Santorini (Thira), Greece (Arr 07:00, Dep 19:00)', content: 'Oia sunset, Fira, volcanic caldera, wine tastings.'},
-          { day: 10, title: 'At Sea', content: 'Onboard leisure and enrichment.'},
-          { day: 11, title: 'Bar, Montenegro (Arr 07:30, Dep 18:00)', content: 'Old Town Bar, Stari Bar, Balkan culture.'},
-          { day: 12, title: 'Corfu, Greece (Arr 07:00, Dep 16:00)', content: 'Corfu Town, Achilleion Palace, coastal tours.'},
-          { day: 13, title: 'Messina (Sicily), Italy (Arr 07:00, Dep 16:00)', content: 'Taormina, Messina Cathedral, Mt. Etna tours.'},
-          { day: 14, title: 'At Sea', content: 'Pool, spa, signature onboard events.'},
-          { day: 15, title: 'Barcelona, Spain (Arr 06:00, Dep 17:00)', content: 'La Sagrada Familia, Gothic Quarter, Ramblas, Picasso Museum.'},
-          { day: 16, title: 'At Sea', content: 'Cooking demos, wellness.'},
-          { day: 17, title: 'Mallorca, Spain', content: 'Palma Cathedral, old town, beaches.'},
-          { day: 18, title: 'Marseille, France (Arr 08:00, Dep 18:00)', content: 'Vieux-Port, Notre-Dame de la Garde, Provence excursions.'},
-          { day: 19, title: 'Corsica, France', content: 'Ajaccio, rugged coastline, Napoléon sites.'},
-          { day: 20, title: 'Genoa, Italy (Arr 08:00, Dep 20:00)', content: 'Portofino, Genoa Old Town, Ligurian coast tours.'},
-          { day: 21, title: 'Livorno (Florence/Pisa), Italy (Arr 07:00, Dep 19:00)', content: 'Florence, Pisa, Tuscan countryside.'},
-          { day: 22, title: 'Civitavecchia (Rome), Italy — Disembarkation', content: 'Disembarkation and final Rome excursions or transfers.'}
+        { day: 1, title: 'Civitavecchia (Rome), Italy — Embarkation', content: 'Embark Sun Princess. Settle in, muster drill, sailaway.'},
+        { day: 2, title: 'Naples, Italy (Arr 07:00, Dep 19:00)', content: 'Options: Pompeii, Capri, Amalfi Coast, Naples city tours.'},
+        { day: 3, title: 'At Sea', content: 'Leisure: spa, pool, enrichment programs.'},
+        { day: 4, title: 'Chania (Crete), Greece (Arr 08:00, Dep 18:00)', content: 'Venetian harbor, Old Town, Cretan culture tours.'},
+        { day: 5, title: 'At Sea — Wedding Day!', content: 'Ceremony at The Dome — Sun Princess. Perfect Pair package celebration and photos.', highlight: true },
+        { day: 6, title: 'Kusadasi (Ephesus), Turkey (Arr 07:00, Dep 18:00)', content: 'Ephesus archaeological tours, House of Virgin Mary.'},
+        { day: 7, title: 'Mykonos, Greece (Arr 07:00, Dep 21:00)', content: 'Beach clubs, Mykonos Town, Delos tours.'},
+        { day: 8, title: 'Athens (Piraeus), Greece (Arr 06:00, Dep 19:00)', content: 'Acropolis & Parthenon, Plaka, Athens city tours.'},
+        { day: 9, title: 'Santorini (Thira), Greece (Arr 07:00, Dep 19:00)', content: 'Oia sunset, Fira, volcanic caldera, wine tastings.'},
+        { day: 10, title: 'At Sea', content: 'Onboard leisure and enrichment.'},
+        { day: 11, title: 'Bar, Montenegro (Arr 07:30, Dep 18:00)', content: 'Old Town Bar, Stari Bar, Balkan culture.'},
+        { day: 12, title: 'Corfu, Greece (Arr 07:00, Dep 16:00)', content: 'Corfu Town, Achilleion Palace, coastal tours.'},
+        { day: 13, title: 'Messina (Sicily), Italy (Arr 07:00, Dep 16:00)', content: 'Taormina, Messina Cathedral, Mt. Etna tours.'},
+        { day: 14, title: 'At Sea', content: 'Pool, spa, signature onboard events.'},
+        { day: 15, title: 'Barcelona, Spain (Arr 06:00, Dep 17:00)', content: 'La Sagrada Familia, Gothic Quarter, Ramblas, Picasso Museum.'},
+        { day: 16, title: 'At Sea', content: 'Cooking demos, wellness.'},
+        { day: 17, title: 'Mallorca, Spain', content: 'Palma Cathedral, old town, beaches.'},
+        { day: 18, title: 'Marseille, France (Arr 08:00, Dep 18:00)', content: 'Vieux-Port, Notre-Dame de la Garde, Provence excursions.'},
+        { day: 19, title: 'Corsica, France', content: 'Ajaccio, rugged coastline, Napoléon sites.'},
+        { day: 20, title: 'Genoa, Italy (Arr 08:00, Dep 20:00)', content: 'Portofino, Genoa Old Town, Ligurian coast tours.'},
+        { day: 21, title: 'Livorno (Florence/Pisa), Italy (Arr 07:00, Dep 19:00)', content: 'Florence, Pisa, Tuscan countryside.'},
+        { day: 22, title: 'Civitavecchia (Rome), Italy — Disembarkation', content: 'Disembarkation and final Rome excursions or transfers.'}
       ],
-      // Glow Up routines
-      morningPlan: [
-        { time: '5:00 - 5:10 AM', activity: 'Step 1 & 2: Hygiene, Body & Face Cleanse', details: 'Lipikar Baume AP+M Wash, Toleriane Caring Wash, Effaclar Micro-Peel.' },
-        { time: '5:10 - 5:20 AM', activity: 'Step 3 - 8: Body Care, Skincare & SPF', details: 'Body Moisturiser, Hormones/Meds, Neck Serum, Hyalu B5, Vitamin C, Anthelios SPF.' },
-        { time: '5:20 - 5:30 AM', activity: 'Step 9: Makeup', details: 'bareMinerals Tint, Mirenesse Powder, Kosas Blush.' },
-        { time: '5:30 - 5:40 AM', activity: 'Step 10 & 11: Hair, Dress & Final Prep', details: 'Davroe Curl Balm, Oribe Gold Lust Oil, get dressed, pack bag.' }
-      ],
+
+      // Morning rotation (rosacea-safe, no Vitamin C)
+      morningRotationSchedule: { 
+        0: 'None', 1: 'Peptide', 2: 'None', 3: 'Peptide', 4: 'None', 5: 'Glow', 6: 'None'
+      },
+      rotationDetailsMorning: {
+        'Peptide': { 
+          title: 'Peptide Morning',
+          steps: [
+            { step: 'Cleanse', product: 'Toleriane Caring Wash' },
+            { step: 'Hydrate & Barrier', product: 'Skin1004 Centella Ampoule + Hyalu B5 Serum' },
+            { step: 'Eye Care', product: 'Hyalu B5 Eye Serum' },
+            { step: 'Serum Slot', product: 'COSRX 6 Peptide Skin Booster' },
+            { step: 'Base Layer', product: 'Tinted Moisturiser (Mon–Fri) or Dermallergo Fluide Day (Sat–Sun)' },
+            { step: 'Sun Protection', product: 'Anthelios 50+ SPF' }
+          ]
+        },
+        'Glow': { 
+          title: 'Glow Morning',
+          steps: [
+            { step: 'Cleanse', product: 'Toleriane Caring Wash' },
+            { step: 'Hydrate & Barrier', product: 'Skin1004 Centella Ampoule + Hyalu B5 Serum' },
+            { step: 'Eye Care', product: 'Hyalu B5 Eye Serum' },
+            { step: 'Serum Slot', product: 'Beauty of Joseon Glow Serum' },
+            { step: 'Base Layer', product: 'Tinted Moisturiser (Fri) or Dermallergo Fluide Day (weekend)' },
+            { step: 'Sun Protection', product: 'Anthelios 50+ SPF' }
+          ]
+        },
+        'None': { 
+          title: 'Barrier Rest Morning',
+          steps: [
+            { step: 'Cleanse', product: 'Toleriane Caring Wash' },
+            { step: 'Hydrate & Barrier', product: 'Skin1004 Centella Ampoule + Hyalu B5 Serum' },
+            { step: 'Eye Care', product: 'Hyalu B5 Eye Serum' },
+            { step: 'Base Layer', product: 'Tinted Moisturiser (Mon–Fri) or Dermallergo Fluide Day (Sat–Sun)' },
+            { step: 'Sun Protection', product: 'Anthelios 50+ SPF' }
+          ]
+        }
+      },
+
+      // Evening rotation (Recovery/Copper/Retinol/Barrier)
       eveningPlanBase: [
         { time: '4:45 - 5:30 PM', activity: 'Movement', details: 'Pilates & Weight Training.' },
         { time: '5:30 - 5:40 PM', activity: 'Post-Workout Cleanse', details: 'MECCA MAX MELT DOWN Cleansing Balm.' },
         { time: '8:10 - 8:45 PM', activity: 'Wind-Down Ritual', details: 'Roogenic Tea, reading, no screens.' }
       ],
-      // Evening rotation schedule (Sun–Sat: 0 = Sun, 6 = Sat)
-const nightRotationSchedule = {
-  0: 'Recovery',   // Sunday
-  1: 'Copper',     // Monday
-  2: 'Retinol',    // Tuesday
-  3: 'Barrier',    // Wednesday
-  4: 'Copper',     // Thursday
-  5: 'Retinol',    // Friday
-  6: 'Barrier'     // Saturday
-};
-// Evening rotation details
-const rotationDetails = {
-  'Recovery': {
-    title: 'Recovery Night',
-    steps: [
-      { step: 'Cleanse', product: 'Toleriane Caring Wash' },
-      { step: 'Hydrate', product: 'Centella Ampoule + Dermallergo Serum' },
-      { step: 'Eye Patch', product: 'COSRX Snail Hydrogel Patch' },
-      { step: 'Seal', product: 'Dermallergo Night Cream' }
-    ]
-  },
-  'Copper': {
-    title: 'Copper Repair Night',
-    steps: [
-      { step: 'Cleanse', product: 'Toleriane Caring Wash' },
-      { step: 'Hydrate', product: 'Centella Ampoule + Hyalu B5 Serum' },
-      { step: 'Active', product: 'Copper Peptide Serum' },
-      { step: 'Seal', product: 'Dermallergo Night Cream' }
-    ]
-  },
-  'Retinol': {
-    title: 'Retinol Power Night',
-    steps: [
-      { step: 'Cleanse', product: 'Toleriane Caring Wash' },
-      { step: 'Hydrate', product: 'Centella Ampoule + Hyalu B5 Serum' },
-      { step: 'Active', product: 'La Roche-Posay Retinol B3 Serum' },
-      { step: 'Seal', product: 'Dermallergo Night Cream' }
-    ]
-  },
-  'Barrier': {
-    title: 'Barrier Reset Night',
-    steps: [
-      { step: 'Cleanse', product: 'Toleriane Caring Wash' },
-      { step: 'Hydrate', product: 'Centella Ampoule + Hyalu B5 Serum' },
-      { step: 'Seal', product: 'Dermallergo Night Cream' }
-    ]
-  }
-};
+      nightRotationSchedule: {
+        0: 'Recovery', 1: 'Copper', 2: 'Retinol', 3: 'Barrier', 4: 'Copper', 5: 'Retinol', 6: 'Barrier'
+      },
+      rotationDetails: {
+        'Recovery': {
+          title: 'Recovery Night',
+          steps: [
+            { step: 'Cleanse', product: 'Toleriane Caring Wash' },
+            { step: 'Hydrate', product: 'Centella Ampoule + Dermallergo Serum' },
+            { step: 'Eye Patch', product: 'COSRX Snail Hydrogel Patch' },
+            { step: 'Seal', product: 'Dermallergo Night Cream' }
+          ]
+        },
+        'Copper': {
+          title: 'Copper Repair Night',
+          steps: [
+            { step: 'Cleanse', product: 'Toleriane Caring Wash' },
+            { step: 'Hydrate', product: 'Centella Ampoule + Hyalu B5 Serum' },
+            { step: 'Active', product: 'Copper Peptide Serum' },
+            { step: 'Seal', product: 'Dermallergo Night Cream' }
+          ]
+        },
+        'Retinol': {
+          title: 'Retinol Power Night',
+          steps: [
+            { step: 'Cleanse', product: 'Toleriane Caring Wash' },
+            { step: 'Hydrate', product: 'Centella Ampoule + Hyalu B5 Serum' },
+            { step: 'Active', product: 'La Roche-Posay Retinol B3 Serum' },
+            { step: 'Seal', product: 'Dermallergo Night Cream' }
+          ]
+        },
+        'Barrier': {
+          title: 'Barrier Reset Night',
+          steps: [
+            { step: 'Cleanse', product: 'Toleriane Caring Wash' },
+            { step: 'Hydrate', product: 'Centella Ampoule + Hyalu B5 Serum' },
+            { step: 'Seal', product: 'Dermallergo Night Cream' }
+          ]
+        }
+      },
+
       proteinData: { labels: ['Breakfast', 'Snacks', 'Lunch', 'Dinner'], values: [45, 15, 25, 27] },
       packingList: [
         { item: "Wedding Dress (Carry-on!)", category: "Wedding", id: "user-p-0" },
@@ -715,523 +724,4 @@ const rotationDetails = {
             { category: 'Spending Money', cost: 1300, paid: 0, dueDate: null }
           ]
         },
-        packingList: [
-          { item: 'Passports', category: 'Docs', id: 'parent-p-0' },
-          { item: 'Insurance details', category: 'Docs', id: 'parent-p-1' },
-          { item: 'Flight e‑tickets', category: 'Docs', id: 'parent-p-2' },
-          { item: 'Walking shoes', category: 'Clothing', id: 'parent-p-3' },
-          { item: 'Formal outfit', category: 'Clothing', id: 'parent-p-4' },
-          { item: 'Medications + scripts', category: 'Medications', id: 'parent-p-5' },
-          { item: 'Reading glasses', category: 'Extras', id: 'parent-p-6' },
-          { item: 'Phone + charger', category: 'Tech', id: 'parent-p-7' },
-          { item: 'Universal adapters', category: 'Tech', id: 'parent-p-8' }
-        ]
-      }
-    },
-
-    elements: {},
-    chartInstances: { protein: null, budget: null, parentsBudget: null },
-    resetCallback: null,
-
-    init() {
-      this.cacheElements();
-      this.renderDynamicContent();
-      this.setupEventListeners();
-      this.loadState();
-      this.updateAllProgressBars();
-      
-      this.switchTab('wedding');
-      this.switchSubTab('wedding', 'plan');
-      this.autoSelectWorkoutTab();
-      this.updateCountdown();
-      this.updateParentsDepartureCountdown();
-    },
-
-    cacheElements() {
-      this.elements = {
-        currentDate: document.getElementById('current-date'),
-        countdown: document.getElementById('countdown-days'),
-        countdownPlan: document.getElementById('countdown-days-plan'),
-        proteinChartCanvas: document.getElementById('proteinChart'),
-        fitnessProgress: document.getElementById('fitness-progress'),
-        fitnessProgressText: document.getElementById('fitness-progress-text'),
-        fitnessProgressTextInner: document.getElementById('fitness-progress-text-inner'),
-        packingGrid: document.getElementById('packing-grid'),
-        packingProgress: document.getElementById('packing-progress'),
-        packingProgressText: document.getElementById('packing-progress-text'),
-        packingProgressTextInner: document.getElementById('packing-progress-text-inner'),
-        packingFilterContainer: document.getElementById('packing-filter-container'),
-        parentsPackingGrid: document.getElementById('parents-packing-grid'),
-        parentsPackingProgress: document.getElementById('parents-packing-progress'),
-        parentsPackingProgressText: document.getElementById('parents-packing-progress-text'),
-        parentsPackingProgressTextInner: document.getElementById('parents-packing-progress-text-inner'),
-        parentsPackingFilterContainer: document.getElementById('parents-packing-filter-container'),
-        budgetTotal: document.getElementById('budget-total'),
-        budgetPaid: document.getElementById('budget-paid'),
-        budgetRemaining: document.getElementById('budget-remaining'),
-        budgetNextDue: document.getElementById('budget-next-due'),
-        budgetChart: document.getElementById('budgetChart'),
-        budgetMilestones: document.getElementById('budget-milestones'),
-        parentsFlightOutbound: document.getElementById('parents-flight-outbound'),
-        parentsFlightReturn: document.getElementById('parents-flight-return'),
-        parentsDepartureCountdown: document.getElementById('parents-departure-countdown'),
-        parentsBudgetTotal: document.getElementById('parents-budget-total'),
-        parentsBudgetPaid: document.getElementById('parents-budget-paid'),
-        parentsBudgetRemaining: document.getElementById('parents-budget-remaining'),
-        parentsBudgetNextDue: document.getElementById('parents-budget-next-due'),
-        parentsBudgetChart: document.getElementById('parentsBudgetChart'),
-        parentsBudgetMilestones: document.getElementById('parents-budget-milestones'),
-        morningPlan: document.getElementById('morning-plan'),
-        eveningPlan: document.getElementById('evening-plan'),
-        itineraryList: document.getElementById('itinerary-list'),
-        modal: document.getElementById('confirmation-modal'),
-        modalTitle: document.getElementById('modal-title'),
-        modalText: document.getElementById('modal-text'),
-        modalConfirm: document.getElementById('modal-confirm'),
-        modalCancel: document.getElementById('modal-cancel'),
-      };
-    },
-
-    renderDynamicContent() {
-        this.elements.currentDate.textContent = `Today is ${new Date().toLocaleDateString('en-AU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
-        this.renderItinerary();
-        this.renderPackingFilters();
-        this.renderParentsPackingFilters();
-    },
-
-    setupEventListeners() {
-      document.querySelectorAll('.main-nav-btn').forEach(btn => btn.addEventListener('click', () => this.switchTab(btn.dataset.tabName)));
-      document.querySelectorAll('#wedding-panel .sub-nav-btn').forEach(btn => btn.addEventListener('click', () => this.switchSubTab('wedding', btn.dataset.subtab)));
-      document.querySelectorAll('#travel-panel .sub-nav-btn').forEach(btn => btn.addEventListener('click', () => this.switchSubTab('travel', btn.dataset.subtab)));
-      document.querySelectorAll('#daily-plan .tab-btn').forEach(btn => btn.addEventListener('click', () => this.showDailyTab(btn.dataset.tab)));
-      document.querySelectorAll('.workout-tab-btn').forEach(btn => btn.addEventListener('click', () => this.showWorkoutTab(btn.dataset.workoutTab)));
-      document.getElementById('expand-all-itinerary')?.addEventListener('click', () => this.toggleAllItinerary(true));
-      document.getElementById('collapse-all-itinerary')?.addEventListener('click', () => this.toggleAllItinerary(false));
-      document.getElementById('print-packing-list')?.addEventListener('click', () => window.print());
-      
-      document.getElementById('reset-wedding-progress')?.addEventListener('click', () => this.resetProgress('weddingChecklistState', '#checklists-subtab .form-checkbox', null, 'wedding checklists'));
-      document.getElementById('reset-packing-progress')?.addEventListener('click', () => this.resetProgress('packingState', '#packing-grid .form-checkbox', this.updatePackingProgress.bind(this), 'packing list'));
-      document.getElementById('reset-glowup-progress')?.addEventListener('click', () => {
-          this.resetProgress('accountabilityState', '#daily-accountability-section .form-checkbox', null, 'daily accountability');
-          this.resetProgress('fitnessMasteryState', '.section[aria-label="3-Year Plan"] .form-checkbox', null, 'fitness mastery');
-          this.resetProgress('workoutCompletionState', null, this.updateFitnessProgress.bind(this), 'weekly workouts', true);
-      });
-
-      document.querySelectorAll('.modify-btn').forEach(btn => btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        alert('Modification options: Wall Push-ups (easier) or Decline Push-ups (harder).');
-      }));
-      document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.addEventListener('change', (e) => this.handleCheckboxChange(e.target)));
-      document.querySelectorAll('.complete-btn').forEach(btn => btn.addEventListener('click', (e) => this.toggleWorkoutComplete(e.target)));
-      
-      // Modal listeners
-      this.elements.modalCancel.addEventListener('click', () => this.hideModal());
-      this.elements.modalConfirm.addEventListener('click', () => {
-        if (this.resetCallback) {
-          this.resetCallback();
-          this.resetCallback = null;
-        }
-        this.hideModal();
-      });
-      
-      // Consolidated accordion listener
-      document.body.addEventListener('click', (e) => {
-          const trigger = e.target.closest('.accordion-trigger');
-          if (trigger) {
-              const item = trigger.closest('[data-accordion-item]');
-              if (item) {
-                  item.classList.toggle('accordion-open');
-              }
-          }
-      });
-    },
-    
-    handleCheckboxChange(checkbox) {
-        if (!checkbox.dataset.persistId) return;
-        const key = checkbox.dataset.persistId.split('-')[0];
-        const selector = `input[data-persist-id^="${key}-"]`;
-        this.saveCheckboxState(key, selector);
-        
-        const progressMap = {
-            'packingState': this.updatePackingProgress.bind(this),
-            'parentsPackingState': this.updateParentsPackingProgress.bind(this),
-        };
-        progressMap[key]?.();
-    },
-
-    loadState() {
-      const keys = ['weddingChecklistState', 'packingState', 'parentsPackingState', 'accountabilityState', 'fitnessMasteryState'];
-      keys.forEach(key => this.loadCheckboxState(key, `input[data-persist-id^="${key}"]`));
-      this.loadWorkoutCompletionState();
-    },
-    
-    saveCheckboxState(key, selector) {
-      const state = {};
-      document.querySelectorAll(selector).forEach(cb => { state[cb.dataset.persistId] = cb.checked; });
-      localStorage.setItem(key, JSON.stringify(state));
-    },
-
-    loadCheckboxState(key, selector) {
-      const state = JSON.parse(localStorage.getItem(key)) || {};
-      document.querySelectorAll(selector).forEach(cb => {
-        if(state[cb.dataset.persistId]) cb.checked = true;
-      });
-    },
-    
-    loadWorkoutCompletionState() {
-      const state = JSON.parse(localStorage.getItem('workoutCompletionState')) || {};
-       document.querySelectorAll('.complete-btn').forEach(btn => {
-        const day = btn.dataset.workoutDay;
-        if (state[day]) {
-          btn.textContent = 'Completed!';
-          btn.classList.add('bg-green-600');
-          btn.classList.remove('bg-[#C8987A]');
-        } else {
-          btn.textContent = 'Mark as Complete';
-          btn.classList.remove('bg-green-600');
-          btn.classList.add('bg-[#C8987A]');
-        }
-      });
-    },
-
-    toggleWorkoutComplete(button) {
-      const day = button.dataset.workoutDay;
-      const state = JSON.parse(localStorage.getItem('workoutCompletionState')) || {};
-      state[day] = !state[day];
-      localStorage.setItem('workoutCompletionState', JSON.stringify(state));
-      this.loadWorkoutCompletionState();
-      this.updateFitnessProgress();
-    },
-    
-    showModal(name, callback) {
-        this.elements.modalText.textContent = `Are you sure you want to reset all progress for the ${name}? This cannot be undone.`;
-        this.resetCallback = callback;
-        this.elements.modal.classList.remove('hidden');
-    },
-
-    hideModal() {
-        this.elements.modal.classList.add('hidden');
-    },
-    
-    resetProgress(key, selector, progressUpdateFn, name, isButton) {
-        this.showModal(name, () => {
-            localStorage.removeItem(key);
-            if (selector) {
-                document.querySelectorAll(selector).forEach(el => el.checked = false);
-            }
-            if (isButton) {
-                this.loadWorkoutCompletionState(); // This will reset buttons to default state
-            }
-            progressUpdateFn?.();
-        });
-    },
-
-    updateAllProgressBars() {
-      this.updatePackingProgress();
-      this.updateParentsPackingProgress();
-      this.updateFitnessProgress();
-    },
-
-    switchTab(tabName) {
-      document.querySelectorAll('.tab-content-panel').forEach(p => p.classList.remove('active'));
-      document.getElementById(`${tabName}-panel`)?.classList.add('active');
-      document.querySelectorAll('.main-nav-btn').forEach(b => b.classList.toggle('active', b.dataset.tabName === tabName));
-      document.body.scrollTop = 0; document.documentElement.scrollTop = 0;
-
-      if (tabName === 'wedding') this.switchSubTab('wedding', 'plan');
-      if (tabName === 'travel') this.switchSubTab('travel', 'itinerary');
-      if (tabName === 'glowUp') {
-        this.renderMorningPlan();
-        this.renderEveningPlan();
-        this.renderProteinChart();
-        this.showDailyTab('morning');
-        this.autoSelectWorkoutTab();
-      }
-    },
-
-    switchSubTab(section, subtab) {
-      const panel = document.getElementById(`${section}-panel`);
-      if (!panel) return;
-      panel.querySelectorAll('.sub-tab-content').forEach(c => c.classList.remove('active'));
-      panel.querySelectorAll('nav .sub-nav-btn').forEach(b => b.classList.toggle('active', b.dataset.subtab === subtab));
-      panel.querySelector(`#${subtab}-subtab`)?.classList.add('active');
-
-      if (section === 'wedding' && subtab === 'budget') this.renderBudget();
-      if (section === 'travel') {
-        if (subtab === 'packing') this.renderPackingList('All');
-        if (subtab === 'parents') {
-          this.renderParentsFlights();
-          this.renderParentsBudget();
-          this.renderParentsPacking('All');
-        }
-      }
-    },
-    
-    handleFilterClick(btn, containerSelector, renderFn) {
-        document.querySelectorAll(`${containerSelector} .sub-nav-btn`).forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        renderFn(btn.dataset.filter);
-    },
-
-    updateCountdown() {
-      const weddingTime = new Date(this.data.weddingDate).getTime();
-      const now = Date.now();
-      const distance = weddingTime - now;
-      if (distance > 0) {
-        const days = Math.ceil(distance / (1000 * 60 * 60 * 24));
-        if (this.elements.countdownPlan) this.elements.countdownPlan.textContent = days;
-        if (this.elements.countdown) this.elements.countdown.textContent = days;
-      }
-    },
-
-    renderPlanList(container, planData) {
-      if (!container) return;
-      container.innerHTML = planData.map(item => `
-        <div class="flex items-start space-x-4 p-3 border-b border-[#F3D8C7] last:border-b-0">
-          <div class="flex-shrink-0 w-28 text-right">
-            <p class="font-bold text-sm text-[#8C5B42]">${item.time}</p>
-          </div>
-          <div>
-            <h4 class="font-semibold text-md">${item.activity}</h4>
-            <p class="text-sm text-[#C8987A]">${item.details}</p>
-          </div>
-        </div>
-      `).join('');
-    },
-    renderMorningPlan() { this.renderPlanList(this.elements.morningPlan, this.data.morningPlan); },
-    renderEveningPlan() {
-        const today = new Date().getDay();
-        const key = this.data.nightRotationSchedule[today];
-        const rot = this.data.rotationDetails[key];
-        
-        const stepsHTML = rot.steps.map(s => `
-            <div>
-                <p class="font-semibold">${s.step}:</p>
-                <p class="pl-2 text-gray-600">${s.product}</p>
-            </div>
-        `).join('');
-
-        const rotationItem = {
-            time: '7:30 - 7:55 PM',
-            activity: `Full PM Routine: <span class="text-[#C8987A]">${rot.title}</span>`,
-            details: `<div class="mt-2 space-y-2 text-sm">${stepsHTML}</div>`
-        };
-        const finalPlan = [this.data.eveningPlanBase[0], this.data.eveningPlanBase[1], rotationItem, this.data.eveningPlanBase[2]];
-        this.renderPlanList(this.elements.eveningPlan, finalPlan);
-    },
-    showDailyTab(tab) {
-      document.querySelectorAll('#daily-plan .tab-content').forEach(el => el.classList.toggle('hidden', true));
-      document.getElementById(`${tab}-plan`).classList.toggle('hidden', false);
-      document.querySelectorAll('#daily-plan .tab-btn').forEach(b => b.classList.remove('border-[#C8987A]'));
-      document.querySelector(`#daily-plan .tab-btn[data-tab="${tab}"]`)?.classList.add('border-[#C8987A]');
-    },
-
-    autoSelectWorkoutTab() {
-        const dayMap = {0: 'weekend', 1: 'monday', 2: 'tuesday', 3: 'wednesday', 4: 'thursday', 5: 'friday', 6: 'weekend'};
-        const today = dayMap[new Date().getDay()];
-        this.showWorkoutTab(today);
-    },
-    showWorkoutTab(tab) {
-      document.querySelectorAll('.workout-content').forEach(content => content.classList.add('hidden'));
-      document.getElementById(`${tab}-workout-plan`)?.classList.remove('hidden');
-      document.querySelectorAll('.workout-tab-btn').forEach(b => b.classList.remove('border-[#C8987A]'));
-      document.querySelector(`.workout-tab-btn[data-workout-tab="${tab}"]`)?.classList.add('border-[#C8987A]');
-    },
-
-    renderProteinChart() {
-      const ctx = this.elements.proteinChartCanvas;
-      if (!ctx) return;
-      if (this.chartInstances.protein) this.chartInstances.protein.destroy();
-      this.chartInstances.protein = new Chart(ctx, { type: 'bar', data: { labels: this.data.proteinData.labels, datasets: [{ label: 'Protein (g)', data: this.data.proteinData.values, backgroundColor: '#8C5B42' }] }, options: { responsive: true, plugins: { legend: { display: false }, tooltip: { enabled: true } }, scales: { y: { beginAtZero: true } } } });
-    },
-
-    _updateProgress(selector, progressBar, progressText, text, innerText) {
-      const parentEl = progressBar?.parentElement;
-      if (!progressBar || !progressText || !parentEl) return;
-      const checkboxes = document.querySelectorAll(selector);
-      const total = checkboxes.length;
-      const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
-      const percent = total ? Math.round((checked / total) * 100) : 0;
-      progressBar.style.width = percent + '%';
-      if(innerText) innerText.textContent = `${percent}%`;
-      progressText.textContent = `${checked} of ${total} ${text}`;
-      parentEl.setAttribute('aria-valuenow', percent);
-    },
-    updatePackingProgress() {
-      this._updateProgress('#packing-grid .form-checkbox', this.elements.packingProgress, this.elements.packingProgressText, 'items packed', this.elements.packingProgressTextInner);
-    },
-    updateParentsPackingProgress() {
-      this._updateProgress('#parents-packing-grid .form-checkbox', this.elements.parentsPackingProgress, this.elements.parentsPackingProgressText, 'items packed', this.elements.parentsPackingProgressTextInner);
-    },
-    updateFitnessProgress() {
-      const state = JSON.parse(localStorage.getItem('workoutCompletionState')) || {};
-      const completed = Object.values(state).filter(Boolean).length;
-      const total = document.querySelectorAll('.complete-btn').length;
-      const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
-      const parentEl = this.elements.fitnessProgress?.parentElement;
-      if(this.elements.fitnessProgress && parentEl) {
-        this.elements.fitnessProgress.style.width = `${percent}%`;
-        parentEl.setAttribute('aria-valuenow', percent);
-      }
-      if(this.elements.fitnessProgressTextInner) this.elements.fitnessProgressTextInner.textContent = `${percent}%`;
-      if(this.elements.fitnessProgressText) this.elements.fitnessProgressText.textContent = `${completed} of ${total} workouts completed`;
-    },
-
-    renderPackingFilters() {
-        const categories = [...new Set(this.data.packingList.map(item => item.category))];
-        const container = this.elements.packingFilterContainer;
-        if (!container) return;
-        let buttonsHTML = `<button class="sub-nav-btn py-2 px-4 rounded-full active" data-filter="All">All (${this.data.packingList.length})</button>`;
-        buttonsHTML += categories.map(cat => {
-            const count = this.data.packingList.filter(i => i.category === cat).length;
-            return `<button class="sub-nav-btn py-2 px-4 rounded-full" data-filter="${cat}">${cat} (${count})</button>`;
-        }).join('');
-        container.innerHTML = buttonsHTML;
-        container.querySelectorAll('.sub-nav-btn').forEach(btn => btn.addEventListener('click', () => this.handleFilterClick(btn, `#${container.id}`, this.renderPackingList.bind(this))));
-    },
-    renderParentsPackingFilters() {
-        const categories = [...new Set(this.data.parents.packingList.map(item => item.category))];
-        const container = this.elements.parentsPackingFilterContainer;
-        if (!container) return;
-        let buttonsHTML = `<button class="sub-nav-btn py-2 px-4 rounded-full active" data-filter="All">All (${this.data.parents.packingList.length})</button>`;
-        buttonsHTML += categories.map(cat => {
-            const count = this.data.parents.packingList.filter(i => i.category === cat).length;
-            return `<button class="sub-nav-btn py-2 px-4 rounded-full" data-filter="${cat}">${cat} (${count})</button>`;
-        }).join('');
-        container.innerHTML = buttonsHTML;
-        container.querySelectorAll('.sub-nav-btn').forEach(btn => btn.addEventListener('click', () => this.handleFilterClick(btn, `#${container.id}`, this.renderParentsPacking.bind(this))));
-    },
-    
-    renderPackingList(filter = 'All') { this._renderList(this.data.packingList, this.elements.packingGrid, filter, 'packingState'); },
-    renderParentsPacking(filter = 'All') { this._renderList(this.data.parents.packingList, this.elements.parentsPackingGrid, filter, 'parentsPackingState'); },
-    
-    _renderList(list, grid, filter, stateKey) {
-        if (!grid) return;
-        const items = (filter === 'All') ? list : list.filter(p => p.category === filter);
-        grid.innerHTML = items.map(p => `
-            <label class="card flex items-start space-x-3 cursor-pointer">
-            <input type="checkbox" class="mt-1 form-checkbox" data-persist-id="${stateKey}-${p.id}">
-            <div><h4 class="font-semibold">${p.item}</h4><p class="text-xs text-[#C8987A]">${p.category}</p></div>
-            </label>`).join('');
-        this.loadCheckboxState(stateKey, `#${grid.id} .form-checkbox`);
-        document.querySelectorAll(`#${grid.id} .form-checkbox`).forEach(cb => cb.addEventListener('change', (e) => this.handleCheckboxChange(e.target)));
-        this.updateAllProgressBars();
-    },
-
-    renderBudget() {
-        this._renderBudget(this.data.budget, {
-            total: this.elements.budgetTotal,
-            paid: this.elements.budgetPaid,
-            remaining: this.elements.budgetRemaining,
-            nextDue: this.elements.budgetNextDue,
-            milestones: this.elements.budgetMilestones,
-            chart: this.elements.budgetChart,
-        }, 'budget');
-    },
-    renderParentsBudget() {
-        this._renderBudget(this.data.parents.budget, {
-            total: this.elements.parentsBudgetTotal,
-            paid: this.elements.parentsBudgetPaid,
-            remaining: this.elements.parentsBudgetRemaining,
-            nextDue: this.elements.parentsBudgetNextDue,
-            milestones: this.elements.parentsBudgetMilestones,
-            chart: this.elements.parentsBudgetChart,
-        }, 'parentsBudget');
-    },
-    _renderBudget(budgetData, elements, chartKey) {
-      const { total, items } = budgetData;
-      const paid = items.reduce((sum, it) => sum + (it.paid || 0), 0);
-      const remaining = total - paid;
-      const upcoming = items.filter(it => it.dueDate && new Date(it.dueDate) >= new Date()).sort((a,b) => new Date(a.dueDate) - new Date(b.dueDate))[0];
-
-      if (elements.total) elements.total.textContent = `A$${total.toLocaleString()}`;
-      if (elements.paid) elements.paid.textContent = `A$${paid.toLocaleString()}`;
-      if (elements.remaining) elements.remaining.textContent = `A$${remaining.toLocaleString()}`;
-      if (elements.nextDue) {
-        if (upcoming) {
-            elements.nextDue.textContent = `${new Date(upcoming.dueDate).toLocaleDateString('en-AU')}`;
-            elements.nextDue.parentElement.classList.add('bg-amber-100', 'border-amber-400');
-        } else {
-            elements.nextDue.textContent = 'N/A';
-            elements.nextDue.parentElement.classList.remove('bg-amber-100', 'border-amber-400');
-        }
-      }
-
-      if (elements.milestones) {
-        elements.milestones.innerHTML = items.map(it => `
-          <li class="card flex items-center justify-between">
-            <div><p class="font-semibold">${it.category}</p><p class="text-xs text-[#C8987A]">Due: ${it.dueDate ? new Date(it.dueDate).toLocaleDateString('en-AU') : '—'}</p></div>
-            <div class="text-right"><p><span class="pill mr-1">Cost</span> A$${it.cost.toLocaleString()}</p><p class="text-sm text-[#8C5B42]"><span class="pill mr-1">Paid</span> A$${(it.paid || 0).toLocaleString()}</p></div>
-          </li>`).join('');
-      }
-
-      if (elements.chart) {
-        if (this.chartInstances[chartKey]) this.chartInstances[chartKey].destroy();
-        this.chartInstances[chartKey] = new Chart(elements.chart, {
-          type: 'doughnut',
-          data: { labels: ['Paid', 'Remaining'], datasets: [{ data: [paid, Math.max(remaining, 0)], backgroundColor: ['#8C5B42', '#C8987A'] }] },
-          options: { responsive: true, plugins: { legend: { position: 'bottom' }, tooltip: {
-              callbacks: {
-                  label: function(context) {
-                      let label = context.label || '';
-                      if (label) { label += ': '; }
-                      if (context.parsed !== null) { label += new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD' }).format(context.parsed); }
-                      return label;
-                  }
-              }
-          } } }
-        });
-      }
-    },
-    renderParentsFlights() {
-      const f = this.data.parents.flights;
-      if (this.elements.parentsFlightOutbound) this.elements.parentsFlightOutbound.innerHTML = `<span class="font-semibold">${f.outbound.airline} ${f.outbound.flightNo}</span> — ${f.outbound.from} → ${f.outbound.to}<br/>Depart: ${f.outbound.depart} — Arrive: ${f.outbound.arrive}<br/>Ref: ${f.outbound.ref}`;
-      if (this.elements.parentsFlightReturn) this.elements.parentsFlightReturn.innerHTML = `<span class="font-semibold">${f.return.airline} ${f.return.flightNo}</span> — ${f.return.from} → ${f.return.to}<br/>Depart: ${f.return.depart} — Arrive: ${f.return.arrive}<br/>Ref: ${f.return.ref}`;
-    },
-    updateParentsDepartureCountdown() {
-      const departTime = new Date(this.data.parents.departureDate).getTime();
-      const now = Date.now();
-      const distance = departTime - now;
-      if (this.elements.parentsDepartureCountdown) this.elements.parentsDepartureCountdown.textContent = (distance > 0) ? Math.ceil(distance / (1000 * 60 * 60 * 24)) : 'Today';
-    },
-
-    renderItinerary() {
-        const container = this.elements.itineraryList;
-        if (!container || container.dataset.rendered) return; // Prevent re-rendering
-        
-        let cruiseHTML = this.data.cruiseItinerary.map(day => `
-            <div class="day-card ${day.highlight ? 'highlight' : ''}" data-accordion-item>
-                <div class="accordion-trigger">
-                    <div>
-                        <h3 class="text-lg font-bold">Day ${day.day}: ${day.title}</h3>
-                    </div>
-                    <span class="chevron text-2xl">▾</span>
-                </div>
-                <div class="accordion-content">
-                    <p class="text-base mt-2">${day.content}</p>
-                </div>
-            </div>
-        `).join('');
-        container.insertAdjacentHTML('beforeend', cruiseHTML);
-        container.dataset.rendered = 'true';
-    },
-    toggleAllItinerary(expand) {
-        document.querySelectorAll('#itinerary-list [data-accordion-item]').forEach(item => {
-            item.classList.toggle('accordion-open', expand);
-        });
-    }
-  };
-
-  document.addEventListener('DOMContentLoaded', () => APP.init());
-  </script>
-<script src="glowup-logic.js"></script>
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js')
-      .then(() => console.log('Service Worker registered'))
-      .catch(err => console.error('Service Worker registration failed:', err));
-  }
-</script>
-  <script src="glowup-logic.js"></script>
-</body>
-</html>
+        packing
