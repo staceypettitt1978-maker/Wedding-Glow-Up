@@ -1,7 +1,7 @@
 // This is a basic, empty service worker file.
 // It's needed to make the web app installable (PWA).
 
-const CACHE_NAME = 'carl-stacey-wedding-v1';
+const CACHE_NAME = 'carl-stacey-wedding-v24';
 const URLS_TO_CACHE = [
   'index.html',
   'manifest.json'
@@ -49,3 +49,4 @@ self.addEventListener('activate', (event) => {
     })
   );
 });
+
