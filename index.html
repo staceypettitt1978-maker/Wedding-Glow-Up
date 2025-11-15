@@ -724,4 +724,604 @@
             { category: 'Spending Money', cost: 1300, paid: 0, dueDate: null }
           ]
         },
-        packing
+        packingList: [
+          { item: 'Passports', category: 'Docs', id: 'parent-p-0' },
+          { item: 'Insurance details', category: 'Docs', id: 'parent-p-1' },
+          { item: 'Flight e‑tickets', category: 'Docs', id: 'parent-p-2' },
+          { item: 'Walking shoes', category: 'Clothing', id: 'parent-p-3' },
+          { item: 'Formal outfit', category: 'Clothing', id: 'parent-p-4' },
+          { item: 'Medications + scripts', category: 'Medications', id: 'parent-p-5' },
+          { item: 'Reading glasses', category: 'Extras', id: 'parent-p-6' },
+          { item: 'Phone + charger', category: 'Tech', id: 'parent-p-7' },
+          { item: 'Universal adapters', category: 'Tech', id: 'parent-p-8' }
+        ]
+      }
+    },
+
+    elements: {},
+    chartInstances: { protein: null, budget: null, parentsBudget: null },
+    resetCallback: null,
+
+    init() {
+      this.cacheElements();
+      this.renderDynamicContent();
+      this.setupEventListeners();
+      this.loadState();
+      this.updateAllProgressBars();
+
+      // Respect URL hash for default tab
+      const hash = window.location.hash.replace('#', '');
+      const validTabs = ['wedding', 'travel', 'glowUp', 'about'];
+      if (hash && validTabs.includes(hash)) {
+        this.switchTab(hash);
+      } else {
+        this.switchTab('wedding');
+      }
+
+      this.switchSubTab('wedding', 'plan');
+      this.autoSelectWorkoutTab();
+      this.updateCountdown();
+      this.updateParentsDepartureCountdown();
+    },
+
+    cacheElements() {
+      this.elements = {
+        currentDate: document.getElementById('current-date'),
+        countdown: document.getElementById('countdown-days'),
+        countdownPlan: document.getElementById('countdown-days-plan'),
+
+        proteinChartCanvas: document.getElementById('proteinChart'),
+
+        fitnessProgress: document.getElementById('fitness-progress'),
+        fitnessProgressText: document.getElementById('fitness-progress-text'),
+        fitnessProgressTextInner: document.getElementById('fitness-progress-text-inner'),
+
+        packingGrid: document.getElementById('packing-grid'),
+        packingProgress: document.getElementById('packing-progress'),
+        packingProgressText: document.getElementById('packing-progress-text'),
+        packingProgressTextInner: document.getElementById('packing-progress-text-inner'),
+        packingFilterContainer: document.getElementById('packing-filter-container'),
+
+        parentsPackingGrid: document.getElementById('parents-packing-grid'),
+        parentsPackingProgress: document.getElementById('parents-packing-progress'),
+        parentsPackingProgressText: document.getElementById('parents-packing-progress-text'),
+        parentsPackingProgressTextInner: document.getElementById('parents-packing-progress-text-inner'),
+        parentsPackingFilterContainer: document.getElementById('parents-packing-filter-container'),
+
+        budgetTotal: document.getElementById('budget-total'),
+        budgetPaid: document.getElementById('budget-paid'),
+        budgetRemaining: document.getElementById('budget-remaining'),
+        budgetNextDue: document.getElementById('budget-next-due'),
+        budgetChart: document.getElementById('budgetChart'),
+        budgetMilestones: document.getElementById('budget-milestones'),
+
+        parentsFlightOutbound: document.getElementById('parents-flight-outbound'),
+        parentsFlightReturn: document.getElementById('parents-flight-return'),
+        parentsDepartureCountdown: document.getElementById('parents-departure-countdown'),
+
+        parentsBudgetTotal: document.getElementById('parents-budget-total'),
+        parentsBudgetPaid: document.getElementById('parents-budget-paid'),
+        parentsBudgetRemaining: document.getElementById('parents-budget-remaining'),
+        parentsBudgetNextDue: document.getElementById('parents-budget-next-due'),
+        parentsBudgetChart: document.getElementById('parentsBudgetChart'),
+        parentsBudgetMilestones: document.getElementById('parents-budget-milestones'),
+
+        morningPlan: document.getElementById('morning-plan'),
+        eveningPlan: document.getElementById('evening-plan'),
+        itineraryList: document.getElementById('itinerary-list'),
+
+        modal: document.getElementById('confirmation-modal'),
+        modalTitle: document.getElementById('modal-title'),
+        modalText: document.getElementById('modal-text'),
+        modalConfirm: document.getElementById('modal-confirm'),
+        modalCancel: document.getElementById('modal-cancel'),
+      };
+    },
+
+    renderDynamicContent() {
+      if (this.elements.currentDate) {
+        this.elements.currentDate.textContent = `Today is ${new Date().toLocaleDateString('en-AU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
+      }
+      this.renderItinerary();
+      this.renderPackingFilters();
+      this.renderParentsPackingFilters();
+    },
+
+    setupEventListeners() {
+      document.querySelectorAll('.main-nav-btn').forEach(btn => btn.addEventListener('click', () => this.switchTab(btn.dataset.tabName)));
+      document.querySelectorAll('#wedding-panel .sub-nav-btn').forEach(btn => btn.addEventListener('click', () => this.switchSubTab('wedding', btn.dataset.subtab)));
+      document.querySelectorAll('#travel-panel .sub-nav-btn').forEach(btn => btn.addEventListener('click', () => this.switchSubTab('travel', btn.dataset.subtab)));
+      document.querySelectorAll('#daily-plan .tab-btn').forEach(btn => btn.addEventListener('click', () => this.showDailyTab(btn.dataset.tab)));
+      document.querySelectorAll('.workout-tab-btn').forEach(btn => btn.addEventListener('click', () => this.showWorkoutTab(btn.dataset.workoutTab)));
+      document.getElementById('expand-all-itinerary')?.addEventListener('click', () => this.toggleAllItinerary(true));
+      document.getElementById('collapse-all-itinerary')?.addEventListener('click', () => this.toggleAllItinerary(false));
+      document.getElementById('print-packing-list')?.addEventListener('click', () => window.print());
+
+      document.getElementById('reset-wedding-progress')?.addEventListener('click', () => this.resetProgress('weddingChecklistState', '#checklists-subtab .form-checkbox', null, 'wedding checklists'));
+      document.getElementById('reset-packing-progress')?.addEventListener('click', () => this.resetProgress('packingState', '#packing-grid .form-checkbox', this.updatePackingProgress.bind(this), 'packing list'));
+      document.getElementById('reset-glowup-progress')?.addEventListener('click', () => {
+        this.resetProgress('accountabilityState', '#daily-accountability-section .form-checkbox', null, 'daily accountability');
+        this.resetProgress('fitnessMasteryState', '.section[aria-label="3-Year Plan"] .form-checkbox', null, 'fitness mastery');
+        this.resetProgress('workoutCompletionState', null, this.updateFitnessProgress.bind(this), 'weekly workouts', true);
+      });
+
+      document.querySelectorAll('.modify-btn').forEach(btn => btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.showModal('Modification Options', () => {}, true,
+          'Modification options: Wall Push-ups (easier) or Decline Push-ups (harder).');
+      }));
+
+      document.body.addEventListener('change', (e) => {
+        if (e.target.matches('input[type="checkbox"]')) this.handleCheckboxChange(e.target);
+      });
+
+      document.body.addEventListener('click', (e) => {
+        const completeBtn = e.target.closest('.complete-btn');
+        if (completeBtn) this.toggleWorkoutComplete(completeBtn);
+      });
+
+      // Modal listeners
+      this.elements.modalCancel.addEventListener('click', () => this.hideModal());
+      this.elements.modalConfirm.addEventListener('click', () => {
+        if (this.resetCallback) {
+          this.resetCallback();
+          this.resetCallback = null;
+        }
+        this.hideModal();
+      });
+
+      // Accordion delegation
+      document.body.addEventListener('click', (e) => {
+        const trigger = e.target.closest('.accordion-trigger');
+        if (trigger) {
+          const item = trigger.closest('[data-accordion-item]');
+          if (item) item.classList.toggle('accordion-open');
+        }
+      });
+    },
+
+    handleCheckboxChange(checkbox) {
+      if (!checkbox.dataset.persistId) return;
+      const key = checkbox.dataset.persistId.split('-')[0];
+      const selector = `input[data-persist-id^="${key}-"]`;
+      this.saveCheckboxState(key, selector);
+
+      const progressMap = {
+        'packingState': this.updatePackingProgress.bind(this),
+        'parentsPackingState': this.updateParentsPackingProgress.bind(this),
+      };
+      progressMap[key]?.();
+    },
+
+    loadState() {
+      const keys = ['weddingChecklistState', 'packingState', 'parentsPackingState', 'accountabilityState', 'fitnessMasteryState'];
+      keys.forEach(key => this.loadCheckboxState(key, `input[data-persist-id^="${key}"]`));
+      this.loadWorkoutCompletionState();
+    },
+
+    saveCheckboxState(key, selector) {
+      const state = {};
+      document.querySelectorAll(selector).forEach(cb => { state[cb.dataset.persistId] = cb.checked; });
+      localStorage.setItem(key, JSON.stringify(state));
+    },
+
+    loadCheckboxState(key, selector) {
+      const state = JSON.parse(localStorage.getItem(key)) || {};
+      document.querySelectorAll(selector).forEach(cb => { if (state[cb.dataset.persistId]) cb.checked = true; });
+    },
+
+    loadWorkoutCompletionState() {
+      const state = JSON.parse(localStorage.getItem('workoutCompletionState')) || {};
+      document.querySelectorAll('.complete-btn').forEach(btn => {
+        const day = btn.dataset.workoutDay;
+        if (state[day]) {
+          btn.textContent = 'Completed!';
+          btn.classList.add('bg-green-600');
+          btn.classList.remove('bg-[#C8987A]');
+        } else {
+          btn.textContent = 'Mark as Complete';
+          btn.classList.remove('bg-green-600');
+          btn.classList.add('bg-[#C8987A]');
+        }
+      });
+    },
+
+    toggleWorkoutComplete(button) {
+      const day = button.dataset.workoutDay;
+      const state = JSON.parse(localStorage.getItem('workoutCompletionState')) || {};
+      state[day] = !state[day];
+      localStorage.setItem('workoutCompletionState', JSON.stringify(state));
+      this.loadWorkoutCompletionState();
+      this.updateFitnessProgress();
+    },
+
+    showModal(title, callback, hideConfirm = false, text = 'This action cannot be undone.') {
+      this.elements.modalTitle.textContent = title;
+      this.elements.modalText.textContent = text;
+      this.resetCallback = callback;
+      this.elements.modalConfirm.classList.toggle('hidden', hideConfirm);
+      this.elements.modalCancel.textContent = hideConfirm ? 'Close' : 'Cancel';
+      this.elements.modal.classList.remove('hidden');
+    },
+
+    hideModal() { this.elements.modal.classList.add('hidden'); },
+
+    resetProgress(key, selector, progressUpdateFn, name, isButton) {
+      this.showModal(`Reset ${name}?`, () => {
+        localStorage.removeItem(key);
+        if (selector) document.querySelectorAll(selector).forEach(el => el.checked = false);
+        if (isButton) this.loadWorkoutCompletionState();
+        progressUpdateFn?.();
+      }, false, `Are you sure you want to reset all progress for the ${name}? This cannot be undone.`);
+    },
+
+    updateAllProgressBars() {
+      this.updatePackingProgress();
+      this.updateParentsPackingProgress();
+      this.updateFitnessProgress();
+    },
+
+    switchTab(tabName) {
+      document.querySelectorAll('.tab-content-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById(`${tabName}-panel`)?.classList.add('active');
+      document.querySelectorAll('.main-nav-btn').forEach(b => b.classList.toggle('active', b.dataset.tabName === tabName));
+      window.location.hash = tabName;
+      document.body.scrollTop = 0; document.documentElement.scrollTop = 0;
+
+      if (tabName === 'wedding') this.switchSubTab('wedding', 'plan');
+      if (tabName === 'travel') this.switchSubTab('travel', 'itinerary');
+      if (tabName === 'glowUp') {
+        this.renderMorningPlan();
+        this.renderEveningPlan();
+        this.renderProteinChart();
+        this.showDailyTab('morning');
+        this.autoSelectWorkoutTab();
+      }
+    },
+
+    switchSubTab(section, subtab) {
+      const panel = document.getElementById(`${section}-panel`);
+      if (!panel) return;
+      panel.querySelectorAll('.sub-tab-content').forEach(c => c.classList.remove('active'));
+      panel.querySelectorAll('nav .sub-nav-btn').forEach(b => b.classList.toggle('active', b.dataset.subtab === subtab));
+      panel.querySelector(`#${subtab}-subtab`)?.classList.add('active');
+
+      if (section === 'wedding' && subtab === 'budget') this.renderBudget();
+      if (section === 'travel') {
+        if (subtab === 'packing') this.renderPackingList('All');
+        if (subtab === 'parents') {
+          this.renderParentsFlights();
+          this.renderParentsBudget();
+          this.renderParentsPacking('All');
+        }
+      }
+    },
+
+    handleFilterClick(btn, containerSelector, renderFn) {
+      document.querySelectorAll(`${containerSelector} .sub-nav-btn`).forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderFn(btn.dataset.filter);
+    },
+
+    updateCountdown() {
+      const weddingTime = new Date(this.data.weddingDate).getTime();
+      const now = Date.now();
+      const distance = weddingTime - now;
+      if (distance > 0) {
+        const days = Math.ceil(distance / (1000 * 60 * 60 * 24));
+        if (this.elements.countdownPlan) this.elements.countdownPlan.textContent = days;
+        if (this.elements.countdown) this.elements.countdown.textContent = days;
+      }
+    },
+
+    renderPlanList(container, planData) {
+      if (!container) return;
+      container.innerHTML = planData.map(item => `
+        <div class="flex items-start space-x-4 p-3 border-b border-[#F3D8C7] last:border-b-0">
+          <div class="flex-shrink-0 w-28 text-right">
+            <p class="font-bold text-sm text-[#8C5B42]">${item.time || item.step}</p>
+          </div>
+          <div>
+            <h4 class="font-semibold text-md">${item.activity || item.product}</h4>
+            ${item.details ? `<p class="text-sm text-[#C8987A]">${item.details}</p>` : ''}
+          </div>
+        </div>
+      `).join('');
+    },
+
+    renderMorningPlan() {
+      const today = new Date().getDay();
+      const key = this.data.morningRotationSchedule[today];
+      const rot = this.data.rotationDetailsMorning[key];
+      if (!rot) {
+        if (this.elements.morningPlan) this.elements.morningPlan.innerHTML = '<p>Error: No morning plan found for today.</p>';
+        return;
+      }
+      const stepsWithTime = rot.steps.map((s, index) => ({
+        time: `Step ${index + 1}`,
+        activity: s.step,
+        details: s.product
+      }));
+      const finalPlan = [
+        { time: '5:00 - 5:30 AM', activity: `Full AM Routine: <span class="text-[#C8987A]">${rot.title}</span>`, details: '' },
+        ...stepsWithTime
+      ];
+      this.renderPlanList(this.elements.morningPlan, finalPlan);
+    },
+
+    renderEveningPlan() {
+      const today = new Date().getDay();
+      const key = this.data.nightRotationSchedule[today];
+      const rot = this.data.rotationDetails[key];
+      if (!rot) {
+        if (this.elements.eveningPlan) this.elements.eveningPlan.innerHTML = '<p>Error: No evening plan found for today.</p>';
+        return;
+      }
+      const stepsHTML = rot.steps.map(s => `
+        <div>
+          <p class="font-semibold">${s.step}:</p>
+          <p class="pl-2 text-gray-600">${s.product}</p>
+        </div>
+      `).join('');
+      const rotationItem = {
+        time: '7:30 - 7:55 PM',
+        activity: `Full PM Routine: <span class="text-[#C8987A]">${rot.title}</span>`,
+        details: `<div class="mt-2 space-y-2 text-sm">${stepsHTML}</div>`
+      };
+      const finalPlan = [this.data.eveningPlanBase[0], this.data.eveningPlanBase[1], rotationItem, this.data.eveningPlanBase[2]];
+      this.renderPlanList(this.elements.eveningPlan, finalPlan);
+    },
+
+    showDailyTab(tab) {
+      document.querySelectorAll('#daily-plan .tab-content').forEach(el => el.classList.toggle('hidden', true));
+      document.getElementById(`${tab}-plan`).classList.toggle('hidden', false);
+      document.querySelectorAll('#daily-plan .tab-btn').forEach(b => b.classList.remove('border-[#C8987A]'));
+      document.querySelector(`#daily-plan .tab-btn[data-tab="${tab}"]`)?.classList.add('border-[#C8987A]');
+    },
+
+    autoSelectWorkoutTab() {
+      const dayMap = {0: 'weekend', 1: 'monday', 2: 'tuesday', 3: 'wednesday', 4: 'thursday', 5: 'friday', 6: 'weekend'};
+      const today = dayMap[new Date().getDay()];
+      this.showWorkoutTab(today);
+    },
+
+    showWorkoutTab(tab) {
+      document.querySelectorAll('.workout-content').forEach(content => content.classList.add('hidden'));
+      document.getElementById(`${tab}-workout-plan`)?.classList.remove('hidden');
+      document.querySelectorAll('.workout-tab-btn').forEach(b => b.classList.remove('border-[#C8987A]'));
+      document.querySelector(`.workout-tab-btn[data-workout-tab="${tab}"]`)?.classList.add('border-[#C8987A]');
+    },
+
+    renderProteinChart() {
+      const ctx = this.elements.proteinChartCanvas;
+      if (!ctx) return;
+      if (this.chartInstances.protein) this.chartInstances.protein.destroy();
+      this.chartInstances.protein = new Chart(ctx, {
+        type: 'bar',
+        data: { labels: this.data.proteinData.labels, datasets: [{ label: 'Protein (g)', data: this.data.proteinData.values, backgroundColor: '#8C5B42' }] },
+        options: { responsive: true, plugins: { legend: { display: false }, tooltip: { enabled: true } }, scales: { y: { beginAtZero: true } } }
+      });
+    },
+
+    _updateProgress(selector, progressBar, progressText, text, innerText) {
+      const parentEl = progressBar?.parentElement;
+      if (!progressBar || !progressText || !parentEl) return;
+      const checkboxes = document.querySelectorAll(selector);
+      const total = checkboxes.length;
+      const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
+      const percent = total ? Math.round((checked / total) * 100) : 0;
+      progressBar.style.width = percent + '%';
+      if (innerText) innerText.textContent = `${percent}%`;
+      progressText.textContent = `${checked} of ${total} ${text}`;
+      parentEl.setAttribute('aria-valuenow', percent);
+    },
+
+    updatePackingProgress() {
+      this._updateProgress('#packing-grid .form-checkbox', this.elements.packingProgress, this.elements.packingProgressText, 'items packed', this.elements.packingProgressTextInner);
+    },
+    updateParentsPackingProgress() {
+      this._updateProgress('#parents-packing-grid .form-checkbox', this.elements.parentsPackingProgress, this.elements.parentsPackingProgressText, 'items packed', this.elements.parentsPackingProgressTextInner);
+    },
+    updateFitnessProgress() {
+      const state = JSON.parse(localStorage.getItem('workoutCompletionState')) || {};
+      const completed = Object.values(state).filter(Boolean).length;
+      const total = document.querySelectorAll('.complete-btn').length;
+      const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+      const parentEl = this.elements.fitnessProgress?.parentElement;
+      if (this.elements.fitnessProgress && parentEl) {
+        this.elements.fitnessProgress.style.width = `${percent}%`;
+        parentEl.setAttribute('aria-valuenow', percent);
+      }
+      if (this.elements.fitnessProgressTextInner) this.elements.fitnessProgressTextInner.textContent = `${percent}%`;
+      if (this.elements.fitnessProgressText) this.elements.fitnessProgressText.textContent = `${completed} of ${total} workouts completed`;
+    },
+
+    renderPackingFilters() {
+      const categories = [...new Set(this.data.packingList.map(item => item.category))];
+      const container = this.elements.packingFilterContainer;
+      if (!container) return;
+      let buttonsHTML = `<button class="sub-nav-btn py-2 px-4 rounded-full active" data-filter="All">All (${this.data.packingList.length})</button>`;
+      buttonsHTML += categories.map(cat => {
+        const count = this.data.packingList.filter(i => i.category === cat).length;
+        return `<button class="sub-nav-btn py-2 px-4 rounded-full" data-filter="${cat}">${cat} (${count})</button>`;
+      }).join('');
+      container.innerHTML = buttonsHTML;
+      container.querySelectorAll('.sub-nav-btn').forEach(btn => btn.addEventListener('click', () => this.handleFilterClick(btn, `#${container.id}`, this.renderPackingList.bind(this))));
+    },
+
+    renderParentsPackingFilters() {
+      const categories = [...new Set(this.data.parents.packingList.map(item => item.category))];
+      const container = this.elements.parentsPackingFilterContainer;
+      if (!container) return;
+      let buttonsHTML = `<button class="sub-nav-btn py-2 px-4 rounded-full active" data-filter="All">All (${this.data.parents.packingList.length})</button>`;
+      buttonsHTML += categories.map(cat => {
+        const count = this.data.parents.packingList.filter(i => i.category === cat).length;
+        return `<button class="sub-nav-btn py-2 px-4 rounded-full" data-filter="${cat}">${cat} (${count})</button>`;
+      }).join('');
+      container.innerHTML = buttonsHTML;
+      container.querySelectorAll('.sub-nav-btn').forEach(btn => btn.addEventListener('click', () => this.handleFilterClick(btn, `#${container.id}`, this.renderParentsPacking.bind(this))));
+    },
+
+    renderPackingList(filter = 'All') { this._renderList(this.data.packingList, this.elements.packingGrid, filter, 'packingState'); },
+    renderParentsPacking(filter = 'All') { this._renderList(this.data.parents.packingList, this.elements.parentsPackingGrid, filter, 'parentsPackingState'); },
+
+    _renderList(list, grid, filter, stateKey) {
+      if (!grid) return;
+      const items = (filter === 'All') ? list : list.filter(p => p.category === filter);
+      grid.innerHTML = items.map(p => `
+        <label class="card flex items-start space-x-3 cursor-pointer">
+          <input type="checkbox" class="mt-1 form-checkbox" data-persist-id="${stateKey}-${p.id}">
+          <div><h4 class="font-semibold">${p.item}</h4><p class="text-xs text-[#C8987A]">${p.category}</p></div>
+        </label>`).join('');
+      this.loadCheckboxState(stateKey, `#${grid.id} .form-checkbox`);
+      document.querySelectorAll(`#${grid.id} .form-checkbox`).forEach(cb => cb.addEventListener('change', (e) => this.handleCheckboxChange(e.target)));
+      this.updateAllProgressBars();
+    },
+
+    renderBudget() {
+      this._renderBudget(this.data.budget, {
+        total: this.elements.budgetTotal,
+        paid: this.elements.budgetPaid,
+        remaining: this.elements.budgetRemaining,
+        nextDue: this.elements.budgetNextDue,
+        milestones: this.elements.budgetMilestones,
+        chart: this.elements.budgetChart,
+      }, 'budget');
+    },
+
+    renderParentsBudget() {
+      this._renderBudget(this.data.parents.budget, {
+        total: this.elements.parentsBudgetTotal,
+        paid: this.elements.parentsBudgetPaid,
+        remaining: this.elements.parentsBudgetRemaining,
+        nextDue: this.elements.parentsBudgetNextDue,
+        milestones: this.elements.parentsBudgetMilestones,
+        chart: this.elements.parentsBudgetChart,
+      }, 'parentsBudget');
+    },
+
+    _renderBudget(budgetData, elements, chartKey) {
+      const { total, items } = budgetData;
+      const paid = items.reduce((sum, it) => sum + (it.paid || 0), 0);
+      const remaining = total - paid;
+      const upcoming = items
+        .filter(it => it.dueDate && new Date(it.dueDate) >= new Date())
+        .sort((a,b) => new Date(a.dueDate) - new Date(b.dueDate))[0];
+
+      if (elements.total) elements.total.textContent = `A$${total.toLocaleString()}`;
+      if (elements.paid) elements.paid.textContent = `A$${paid.toLocaleString()}`;
+      if (elements.remaining) elements.remaining.textContent = `A$${remaining.toLocaleString()}`;
+      if (elements.nextDue) {
+        if (upcoming) {
+          elements.nextDue.textContent = `${new Date(upcoming.dueDate).toLocaleDateString('en-AU')}`;
+          elements.nextDue.parentElement.classList.add('bg-amber-100', 'border-amber-400');
+        } else {
+          elements.nextDue.textContent = 'N/A';
+          elements.nextDue.parentElement.classList.remove('bg-amber-100', 'border-amber-400');
+        }
+      }
+
+      if (elements.milestones) {
+        elements.milestones.innerHTML = items.map(it => `
+          <li class="card flex items-center justify-between">
+            <div><p class="font-semibold">${it.category}</p><p class="text-xs text-[#C8987A]">Due: ${it.dueDate ? new Date(it.dueDate).toLocaleDateString('en-AU') : '—'}</p></div>
+            <div class="text-right"><p><span class="pill mr-1">Cost</span> A$${it.cost.toLocaleString()}</p><p class="text-sm text-[#8C5B42]"><span class="pill mr-1">Paid</span> A$${(it.paid || 0).toLocaleString()}</p></div>
+          </li>`).join('');
+      }
+
+      // Doughnut chart
+      if (elements.chart) {
+        if (this.chartInstances[chartKey]) this.chartInstances[chartKey].destroy();
+        this.chartInstances[chartKey] = new Chart(elements.chart, {
+          type: 'doughnut',
+          data: { labels: ['Paid', 'Remaining'], datasets: [{ data: [paid, Math.max(remaining, 0)], backgroundColor: ['#8C5B42', '#C8987A'] }] },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { position: 'bottom' },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    let label = context.label || '';
+                    if (label) label += ': ';
+                    if (context.parsed !== null) {
+                      label += new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD' }).format(context.parsed);
+                    }
+                    return label;
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // Linear progress bar
+      const percentPaid = total ? Math.round((paid / total) * 100) : 0;
+      const bar = document.getElementById('budget-progress');
+      const inner = document.getElementById('budget-progress-text-inner');
+      const label = document.getElementById('budget-progress-text');
+      if (bar && inner && label) {
+        bar.style.width = `${percentPaid}%`;
+        bar.parentElement.setAttribute('aria-valuenow', percentPaid);
+        inner.textContent = `${percentPaid}%`;
+        label.textContent = `${percentPaid}% paid`;
+      }
+    },
+
+    renderParentsFlights() {
+      const f = this.data.parents.flights;
+      if (this.elements.parentsFlightOutbound) this.elements.parentsFlightOutbound.innerHTML =
+        `<span class="font-semibold">${f.outbound.airline} ${f.outbound.flightNo}</span> — ${f.outbound.from} → ${f.outbound.to}<br/>Depart: ${f.outbound.depart} — Arrive: ${f.outbound.arrive}<br/>Ref: ${f.outbound.ref}`;
+      if (this.elements.parentsFlightReturn) this.elements.parentsFlightReturn.innerHTML =
+        `<span class="font-semibold">${f.return.airline} ${f.return.flightNo}</span> — ${f.return.from} → ${f.return.to}<br/>Depart: ${f.return.depart} — Arrive: ${f.return.arrive}<br/>Ref: ${f.return.ref}`;
+    },
+
+    updateParentsDepartureCountdown() {
+      const departTime = new Date(this.data.parents.departureDate).getTime();
+      const now = Date.now();
+      const distance = departTime - now;
+      if (this.elements.parentsDepartureCountdown) {
+        this.elements.parentsDepartureCountdown.textContent = (distance > 0)
+          ? Math.ceil(distance / (1000 * 60 * 60 * 24))
+          : 'Today';
+      }
+    },
+
+    renderItinerary() {
+      const container = this.elements.itineraryList;
+      if (!container || container.dataset.rendered) return;
+      let cruiseHTML = this.data.cruiseItinerary.map(day => `
+        <div class="day-card ${day.highlight ? 'highlight' : ''}" data-accordion-item>
+          <div class="accordion-trigger">
+            <div><h3 class="text-lg font-bold">Day ${day.day}: ${day.title}</h3></div>
+            <span class="chevron text-2xl">▾</span>
+          </div>
+          <div class="accordion-content">
+            <p class="text-base mt-2">${day.content}</p>
+          </div>
+        </div>
+      `).join('');
+      container.insertAdjacentHTML('beforeend', cruiseHTML);
+      container.dataset.rendered = 'true';
+    },
+
+    toggleAllItinerary(expand) {
+      document.querySelectorAll('#itinerary-list [data-accordion-item]').forEach(item => {
+        item.classList.toggle('accordion-open', expand);
+      });
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', () => APP.init());
+  </script>
+
+  <!-- Single registration for Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('Service Worker registered'))
+        .catch(err => console.error('Service Worker registration failed:', err));
+    }
+  </script>
+</body>
