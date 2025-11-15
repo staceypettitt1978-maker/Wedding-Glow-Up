@@ -624,13 +624,54 @@
         { time: '5:30 - 5:40 PM', activity: 'Post-Workout Cleanse', details: 'MECCA MAX MELT DOWN Cleansing Balm.' },
         { time: '8:10 - 8:45 PM', activity: 'Wind-Down Ritual', details: 'Roogenic Tea, reading, no screens.' }
       ],
-      nightRotationSchedule: { 0: 'B', 1: 'C', 2: 'A', 3: 'B', 4: 'D', 5: 'A', 6: 'C' }, // Sun-Sat
-      rotationDetails: {
-        'A': { title: 'Exfoliation Night', steps: [ { step: 'Shower & Body Prep', product: 'Effaclar Micro-Peeling Gel (face+body), then Lipikar Baume AP+M.' }, { step: 'Second Cleanse', product: 'Effaclar Micro-Peeling Gel.' }, { step: 'Eye Treatment', product: 'Hyalu B5 Eye Serum.' }, { step: 'Moisturise', product: 'Toleriane Repair Night + Boost Lab Neck Serum.' }, { step: 'Optional Buffer', product: 'Cicaplast Baume B5+ (targeted).' } ]},
-        'B': { title: 'Retinol Power Night', steps: [ { step: 'Shower & Body Prep', product: 'Glycolic Acid (body), then Lipikar Baume.' }, { step: 'Second Cleanse', product: 'Toleriane Dermo Cleanser.' }, { step: 'Active', product: 'Retinol B3 Serum.' }, { step: 'Moisturise', product: 'Toleriane Repair Night + Neck Serum.' }, { step: 'Optional Buffer', product: 'Cicaplast Baume B5+ (targeted).' } ]},
-        'C': { title: 'Copper Repair Night', steps: [ { step: 'Shower & Body Prep', product: 'Lipikar Baume.' }, { step: 'Second Cleanse', product: 'Toleriane Dermo Cleanser.' }, { step: 'Active', product: 'The Ordinary Copper Peptides.' }, { step: 'Moisturise', product: 'Toleriane Repair Night + Neck Serum.' }, { step: 'Optional Buffer', product: 'Cicaplast Baume B5+.' } ]},
-        'D': { title: 'Recovery Night', steps: [ { step: 'Shower & Body Prep', product: 'Lipikar Baume.' }, { step: 'Second Cleanse', product: 'Toleriane Dermo Cleanser.' }, { step: 'Active', product: 'Hyalu B5 Serum.' }, { step: 'Eye', product: 'Hyalu B5 Eye Serum.' }, { step: 'Moisturise', product: 'Toleriane Repair Night + Neck Serum.' } ]}
-      },
+      // Evening rotation schedule (Sun–Sat: 0 = Sun, 6 = Sat)
+const nightRotationSchedule = {
+  0: 'Recovery',   // Sunday
+  1: 'Copper',     // Monday
+  2: 'Retinol',    // Tuesday
+  3: 'Barrier',    // Wednesday
+  4: 'Copper',     // Thursday
+  5: 'Retinol',    // Friday
+  6: 'Barrier'     // Saturday
+};
+// Evening rotation details
+const rotationDetails = {
+  'Recovery': {
+    title: 'Recovery Night',
+    steps: [
+      { step: 'Cleanse', product: 'Toleriane Caring Wash' },
+      { step: 'Hydrate', product: 'Centella Ampoule + Dermallergo Serum' },
+      { step: 'Eye Patch', product: 'COSRX Snail Hydrogel Patch' },
+      { step: 'Seal', product: 'Dermallergo Night Cream' }
+    ]
+  },
+  'Copper': {
+    title: 'Copper Repair Night',
+    steps: [
+      { step: 'Cleanse', product: 'Toleriane Caring Wash' },
+      { step: 'Hydrate', product: 'Centella Ampoule + Hyalu B5 Serum' },
+      { step: 'Active', product: 'Copper Peptide Serum' },
+      { step: 'Seal', product: 'Dermallergo Night Cream' }
+    ]
+  },
+  'Retinol': {
+    title: 'Retinol Power Night',
+    steps: [
+      { step: 'Cleanse', product: 'Toleriane Caring Wash' },
+      { step: 'Hydrate', product: 'Centella Ampoule + Hyalu B5 Serum' },
+      { step: 'Active', product: 'La Roche-Posay Retinol B3 Serum' },
+      { step: 'Seal', product: 'Dermallergo Night Cream' }
+    ]
+  },
+  'Barrier': {
+    title: 'Barrier Reset Night',
+    steps: [
+      { step: 'Cleanse', product: 'Toleriane Caring Wash' },
+      { step: 'Hydrate', product: 'Centella Ampoule + Hyalu B5 Serum' },
+      { step: 'Seal', product: 'Dermallergo Night Cream' }
+    ]
+  }
+};
       proteinData: { labels: ['Breakfast', 'Snacks', 'Lunch', 'Dinner'], values: [45, 15, 25, 27] },
       packingList: [
         { item: "Wedding Dress (Carry-on!)", category: "Wedding", id: "user-p-0" },
